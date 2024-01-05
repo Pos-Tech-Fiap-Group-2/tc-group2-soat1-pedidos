@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.techchallenge.pedidos.adapter.controllers.FakeCheckoutController;
+//import com.techchallenge.pedidos.adapter.controllers.FakeCheckoutController;
 import com.techchallenge.pedidos.adapter.driver.model.PedidoModel;
 import com.techchallenge.pedidos.adapter.driver.model.input.PedidoInput;
 

@@ -70,8 +70,8 @@ public class PedidoController {
 		itemPedidoUseCase.excluirItemAoPedido(id, input.getProdutoId());
 	}
 
-    public String buscarStatusDePagamentoDoPedido(Long id) {
-        Pedido pedido = useCase.buscarPedidoPorId(id);
-        return mapper.toPagamentoStatus(pedido);
-    }
+//    public String buscarStatusDePagamentoDoPedido(Long id) {
+//        Pedido pedido = useCase.buscarPedidoPorId(id);
+//        return mapper.toPagamentoStatus(pedido);
+//    }
 }

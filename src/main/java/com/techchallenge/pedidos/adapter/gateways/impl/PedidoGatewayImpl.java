@@ -11,15 +11,15 @@ import org.springframework.transaction.annotation.Transactional;
 import com.techchallenge.pedidos.adapter.gateways.PedidoGateway;
 import com.techchallenge.pedidos.adapter.mapper.business.PedidoBusinessMapper;
 import com.techchallenge.pedidos.adapter.mapper.db.PedidoEntityMapper;
-import com.techchallenge.pedidos.adapter.mapper.db.TipoPagamentoEntityMapper;
+//import com.techchallenge.pedidos.adapter.mapper.db.TipoPagamentoEntityMapper;
 import com.techchallenge.pedidos.core.domain.entities.Pedido;
-import com.techchallenge.pedidos.core.domain.entities.StatusPagamento;
+//import com.techchallenge.pedidos.core.domain.entities.StatusPagamento;
 import com.techchallenge.pedidos.core.domain.entities.StatusPedido;
-import com.techchallenge.pedidos.core.domain.entities.TipoPagamento;
+//import com.techchallenge.pedidos.core.domain.entities.TipoPagamento;
 import com.techchallenge.pedidos.core.domain.exception.EntidadeEmUsoException;
 import com.techchallenge.pedidos.core.domain.exception.EntidadeNaoEncontradaException;
 import com.techchallenge.pedidos.drivers.db.entities.PedidoEntity;
-import com.techchallenge.pedidos.drivers.db.entities.TipoPagamentoEntity;
+//import com.techchallenge.pedidos.drivers.db.entities.TipoPagamentoEntity;
 import com.techchallenge.pedidos.drivers.db.repositories.PedidoRepository;
 
 @Component
@@ -35,8 +35,8 @@ public class PedidoGatewayImpl implements PedidoGateway {
     private PedidoEntityMapper mapper;
     @Autowired
     private PedidoBusinessMapper businessMapper;
-    @Autowired
-    private TipoPagamentoEntityMapper pagamentoEntityMapper;
+//    @Autowired
+//    private TipoPagamentoEntityMapper pagamentoEntityMapper;
     
     public List<Pedido> buscarPedidos() {
         return businessMapper.toCollectionModel(repository.findAll());
@@ -49,12 +49,12 @@ public class PedidoGatewayImpl implements PedidoGateway {
     	return businessMapper.toModel(entity);
     }
 
-    public Pedido buscarPedidoPorPaymentId(Long paymentId) {
-        PedidoEntity entity = repository.findByPaymentId(paymentId).orElseThrow(() -> new EntidadeNaoEncontradaException(
-                String.format(MSG_PEDIDO_NAO_ENCONTRADO, paymentId)));
-
-    	return businessMapper.toModel(entity);
-    }
+//    public Pedido buscarPedidoPorPaymentId(Long paymentId) {
+//        PedidoEntity entity = repository.findByPaymentId(paymentId).orElseThrow(() -> new EntidadeNaoEncontradaException(
+//                String.format(MSG_PEDIDO_NAO_ENCONTRADO, paymentId)));
+//
+//    	return businessMapper.toModel(entity);
+//    }
 
     public List<Pedido> buscarPedidosPorStatus(StatusPedido statusPedido) {
         return businessMapper.toCollectionModel(repository.findByStatus(statusPedido));
@@ -76,23 +76,23 @@ public class PedidoGatewayImpl implements PedidoGateway {
         repository.save(entity);
     }
     
-	@Override
-	public void atualizarStatusPagamento(Long id, StatusPagamento statusPagamento) {
-		this.atualizarStatusDoPedidoEPagamento(id, null, statusPagamento);
-	}
+//	@Override
+//	public void atualizarStatusPagamento(Long id, StatusPagamento statusPagamento) {
+//		this.atualizarStatusDoPedidoEPagamento(id, null, statusPagamento);
+//	}
     
-    @Transactional
-    public void atualizarStatusDoPedidoEPagamento(Long pedidoId, StatusPedido statusPedido, StatusPagamento statusPagamento) {
-    	PedidoEntity entity = repository.findById(pedidoId).orElseThrow(() -> new EntidadeNaoEncontradaException(
-                String.format(MSG_PEDIDO_NAO_ENCONTRADO, pedidoId)));
-
-    	if (statusPedido != null) {
-    		entity.setStatus(statusPedido);	
-    	}
-    	
-    	entity.setStatusPagamento(statusPagamento);
-    	repository.save(entity);
-    }
+//    @Transactional
+//    public void atualizarStatusDoPedidoEPagamento(Long pedidoId, StatusPedido statusPedido, StatusPagamento statusPagamento) {
+//    	PedidoEntity entity = repository.findById(pedidoId).orElseThrow(() -> new EntidadeNaoEncontradaException(
+//                String.format(MSG_PEDIDO_NAO_ENCONTRADO, pedidoId)));
+//
+//    	if (statusPedido != null) {
+//    		entity.setStatus(statusPedido);	
+//    	}
+//    	
+//    	entity.setStatusPagamento(statusPagamento);
+//    	repository.save(entity);
+//    }
     
     @Transactional
     public void excluir(Long pedidoId) {
@@ -106,26 +106,26 @@ public class PedidoGatewayImpl implements PedidoGateway {
 		}
     }
 
-	@Override
-	@Transactional
-	public void atualizarTipoPagamento(Long id, TipoPagamento tipoPagamento) {
-        PedidoEntity entity = repository.findByIdAndStatus(id, StatusPedido.RECEBIDO).orElseThrow(() -> new EntidadeNaoEncontradaException(
-                String.format(MSG_PEDIDO_STATUS_NAO_ENCONTRADO, id)));
-        
-        TipoPagamentoEntity pagamentoEntity = pagamentoEntityMapper.toModel(tipoPagamento);
-        
-        entity.setStatus(StatusPedido.PREPARACAO);
-        entity.setTipoPagamento(pagamentoEntity);
-	}
+//	@Override
+//	@Transactional
+//	public void atualizarTipoPagamento(Long id, TipoPagamento tipoPagamento) {
+//        PedidoEntity entity = repository.findByIdAndStatus(id, StatusPedido.RECEBIDO).orElseThrow(() -> new EntidadeNaoEncontradaException(
+//                String.format(MSG_PEDIDO_STATUS_NAO_ENCONTRADO, id)));
+//        
+//        TipoPagamentoEntity pagamentoEntity = pagamentoEntityMapper.toModel(tipoPagamento);
+//        
+//        entity.setStatus(StatusPedido.PREPARACAO);
+//        entity.setTipoPagamento(pagamentoEntity);
+//	}
 
-    @Override
-    @Transactional
-    public void atualizarPaymentId(Long id, Long paymentId) {
-        PedidoEntity entity = repository.findByIdAndStatus(id, StatusPedido.PREPARACAO).orElseThrow(() -> new EntidadeNaoEncontradaException(
-                String.format(MSG_PEDIDO_STATUS_NAO_ENCONTRADO, id)));
-
-        entity.setPaymentId(paymentId);
-    }
+//    @Override
+//    @Transactional
+//    public void atualizarPaymentId(Long id, Long paymentId) {
+//        PedidoEntity entity = repository.findByIdAndStatus(id, StatusPedido.PREPARACAO).orElseThrow(() -> new EntidadeNaoEncontradaException(
+//                String.format(MSG_PEDIDO_STATUS_NAO_ENCONTRADO, id)));
+//
+//        entity.setPaymentId(paymentId);
+//    }
 
 	@Override
 	public Pedido gravar(Pedido pedido) {

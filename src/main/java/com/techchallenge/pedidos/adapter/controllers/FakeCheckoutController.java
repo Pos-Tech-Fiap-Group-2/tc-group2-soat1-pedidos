@@ -11,6 +11,7 @@ import com.techchallenge.pedidos.adapter.driver.model.PedidoModel;
 import com.techchallenge.pedidos.adapter.driver.model.input.PedidoInput;
 import com.techchallenge.pedidos.adapter.mapper.api.PedidoApiMapper;
 import com.techchallenge.pedidos.core.domain.entities.Pedido;
+//import com.techchallenge.pedidos.core.domain.usecases.FakeCheckoutUseCase;
 import com.techchallenge.pedidos.core.domain.usecases.FakeCheckoutUseCase;
 
 import io.swagger.annotations.ApiOperation;

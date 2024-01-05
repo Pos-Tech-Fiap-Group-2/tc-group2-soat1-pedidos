@@ -46,7 +46,7 @@ public class PedidoApiMapper {
                 .collect(Collectors.toList());
     }
 
-    public String toPagamentoStatus(Pedido pedido) {
-        return mapper.map(pedido, PedidoModel.class).getStatusPagamento().name();
-    }
+//    public String toPagamentoStatus(Pedido pedido) {
+//        return mapper.map(pedido, PedidoModel.class).getStatusPagamento().name();
+//    }
 }

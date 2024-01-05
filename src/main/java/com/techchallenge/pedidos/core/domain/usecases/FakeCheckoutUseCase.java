@@ -5,7 +5,12 @@ import java.time.OffsetDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.techchallenge.pedidos.core.domain.entities.*;
+import com.techchallenge.pedidos.core.domain.entities.Cliente;
+import com.techchallenge.pedidos.core.domain.entities.Pedido;
+import com.techchallenge.pedidos.core.domain.entities.Produto;
+import com.techchallenge.pedidos.core.domain.entities.StatusPedido;
+
+
 
 @Service
 public class FakeCheckoutUseCase {
@@ -25,7 +30,7 @@ public class FakeCheckoutUseCase {
 		pedido.setDataSolicitacao(OffsetDateTime.now());
 		pedido.setStatus(StatusPedido.RECEBIDO);
 		pedido.calcularValor();
-		pedido.setStatusPagamento(StatusPagamento.AGUARDANDO_PAGAMENTO);
+//		pedido.setStatusPagamento(StatusPagamento.AGUARDANDO_PAGAMENTO);
 		
 		return pedidoUseCase.gravar(pedido);
 	}
