@@ -21,6 +21,12 @@ public class FakeCheckoutUseCase {
 	private ProdutoUseCase produtoUseCase;
 	@Autowired
 	private ClienteUseCase clienteUseCase;
+
+	@Autowired
+	private ProducaoUseCase producaoUseCase;
+
+	@Autowired
+	private PagamentoUseCase pagamentoUseCase;
 	
 	public Pedido checkout(Pedido pedido) {
 		
@@ -30,9 +36,15 @@ public class FakeCheckoutUseCase {
 		pedido.setDataSolicitacao(OffsetDateTime.now());
 		pedido.setStatus(StatusPedido.RECEBIDO);
 		pedido.calcularValor();
-//		pedido.setStatusPagamento(StatusPagamento.AGUARDANDO_PAGAMENTO);
-		
-		return pedidoUseCase.gravar(pedido);
+
+		Pedido pedidoCadastrado = pedidoUseCase.gravar(pedido);
+
+		if(pedidoCadastrado != null) {
+			producaoUseCase.enviarPedidoParaProducao(pedidoCadastrado.getId());
+			pagamentoUseCase.enviarPedidoParaPagamento(pedidoCadastrado.getId());
+		}
+
+		return pedidoCadastrado;
 	}
 	
 	private void validarItens(Pedido pedido) {
