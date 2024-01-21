@@ -30,7 +30,6 @@ public class FakeCheckoutUseCase {
 		pedido.setDataSolicitacao(OffsetDateTime.now());
 		pedido.setStatus(StatusPedido.RECEBIDO);
 		pedido.calcularValor();
-//		pedido.setStatusPagamento(StatusPagamento.AGUARDANDO_PAGAMENTO);
 		
 		return pedidoUseCase.gravar(pedido);
 	}

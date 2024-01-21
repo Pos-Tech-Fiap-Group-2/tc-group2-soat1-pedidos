@@ -3,6 +3,7 @@ package com.techchallenge.pedidos.core.domain.entities;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public class Pedido {
@@ -10,10 +11,8 @@ public class Pedido {
 	private Long paymentId;
 	private List<ItemPedido> itens;
 	private BigDecimal valor;
-//	private TipoPagamento tipoPagamento;
 	private StatusPedido status;
 	private Cliente cliente;
-//	private StatusPagamento statusPagamento;
 
 	private OffsetDateTime dataSolicitacao;
 	private OffsetDateTime dataCancelamento;
@@ -42,14 +41,6 @@ public class Pedido {
 	public void setValor(BigDecimal valor) {
 		this.valor = valor;
 	}
-
-//	public TipoPagamento getTipoPagamento() {
-//		return tipoPagamento;
-//	}
-//
-//	public void setTipoPagamento(TipoPagamento tipoPagamento) {
-//		this.tipoPagamento = tipoPagamento;
-//	}
 
 	public StatusPedido getStatus() {
 		return status;
@@ -107,11 +98,20 @@ public class Pedido {
 		this.id = id;
 	}
 
-//	public StatusPagamento getStatusPagamento() {
-//		return statusPagamento;
-//	}
-//
-//	public void setStatusPagamento(StatusPagamento statusPagamento) {
-//		this.statusPagamento = statusPagamento;
-//	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Pedido other = (Pedido) obj;
+		return Objects.equals(id, other.id);
+	}
 }
