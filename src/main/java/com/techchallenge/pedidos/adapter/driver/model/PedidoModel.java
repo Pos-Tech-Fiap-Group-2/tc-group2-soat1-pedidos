@@ -3,32 +3,25 @@ package com.techchallenge.pedidos.adapter.driver.model;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Objects;
 
 //import com.techchallenge.pedidos.core.domain.entities.StatusPagamento;
 import com.techchallenge.pedidos.core.domain.entities.StatusPedido;
-//import com.techchallenge.pedidos.core.domain.entities.TipoPagamento;
 
 public class PedidoModel {
+	
 	private Long id;
     private List<ItemPedidoModel> itens;
     private BigDecimal valor;
-//    private TipoPagamento tipoPagamento;
     private StatusPedido status;
     private ClienteModel cliente;
     private OffsetDateTime dataSolicitacao;
-
     private OffsetDateTime dataCancelamento;
     private OffsetDateTime dataFinalizacao;
 
     public List<ItemPedidoModel> getItens() {
         return itens;
     }
-
-//    private StatusPagamento statusPagamento;
-
-//    public StatusPagamento getStatusPagamento() {
-//        return statusPagamento;
-//    }
 
     public void setItens(List<ItemPedidoModel> itens) {
         this.itens = itens;
@@ -41,14 +34,6 @@ public class PedidoModel {
     public void setValor(BigDecimal valor) {
         this.valor = valor;
     }
-
-//    public TipoPagamento getTipoPagamento() {
-//        return tipoPagamento;
-//    }
-//
-//    public void setTipoPagamento(TipoPagamento tipoPagamento) {
-//        this.tipoPagamento = tipoPagamento;
-//    }
 
     public StatusPedido getStatus() {
         return status;
@@ -98,7 +83,20 @@ public class PedidoModel {
 		this.id = id;
 	}
 
-//	public void setStatusPagamento(StatusPagamento statusPagamento) {
-//		this.statusPagamento = statusPagamento;
-//	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		PedidoModel other = (PedidoModel) obj;
+		return Objects.equals(id, other.id);
+	}
 }

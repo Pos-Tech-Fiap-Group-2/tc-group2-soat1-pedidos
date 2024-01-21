@@ -69,9 +69,4 @@ public class PedidoController {
 	public void remover(Long id, ItemPedidoInput input) {
 		itemPedidoUseCase.excluirItemAoPedido(id, input.getProdutoId());
 	}
-
-//    public String buscarStatusDePagamentoDoPedido(Long id) {
-//        Pedido pedido = useCase.buscarPedidoPorId(id);
-//        return mapper.toPagamentoStatus(pedido);
-//    }
 }

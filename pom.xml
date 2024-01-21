@@ -197,13 +197,16 @@
 				<configuration>
 					<excludes>
 						<!-- Excludes de POJOs e classe Main do Springboot -->
-						<exclude>com/techchallenge/pagamentos/core/domain/entities/*</exclude>
-						<exclude>com/techchallenge/pagamentos/core/domain/exception/*</exclude>
-						<exclude>com/techchallenge/pagamentos/drivers/db/entities/*</exclude>
-						<exclude>com/techchallenge/pagamentos/adapter/driver/model/*</exclude>
-						<exclude>com/techchallenge/pagamentos/adapter/driver/model/input/*</exclude>
-						<exclude>com/techchallenge/pagamentos/adapter/dto/*</exclude>
-						<exclude>com/techchallenge/pagamentos/TechChallengePagamentosApplication*</exclude>
+						<exclude>com/techchallenge/pedidos/core/domain/entities/*</exclude>
+						<exclude>com/techchallenge/pedidos/core/domain/exception/*</exclude>
+						<exclude>com/techchallenge/pedidos/drivers/db/entities/*</exclude>
+						<exclude>com/techchallenge/pedidos/adapter/driver/model/*</exclude>
+						<exclude>com/techchallenge/pedidos/adapter/driver/model/input/*</exclude>
+						<exclude>com/techchallenge/pedidos/adapter/dto/*</exclude>
+						<exclude>com/techchallenge/pedidos/adapter/dto/cliente/*</exclude>
+						<!-- Exclude de classes para suporte a geração da doc no Swagger. -->
+						<exclude>com/techchallenge/pedidos/core/openapi/adapter/*</exclude>
+						<exclude>com/techchallenge/pedidos/core/openapi/*</exclude>
 					</excludes>
 				</configuration>
 				<executions>

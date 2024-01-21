@@ -45,8 +45,4 @@ public class PedidoApiMapper {
                 .filter(pedido -> pedido.getStatus() != StatusPedido.FINALIZADO)
                 .collect(Collectors.toList());
     }
-
-//    public String toPagamentoStatus(Pedido pedido) {
-//        return mapper.map(pedido, PedidoModel.class).getStatusPagamento().name();
-//    }
 }
