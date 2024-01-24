@@ -3,12 +3,12 @@ package com.techchallenge.pedidos.drivers.db.entities;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -28,17 +28,11 @@ public class PedidoEntity {
 	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
 	private List<ItemPedidoEntity> itens;
 	private BigDecimal valor;
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name="tipo_pagamento_id", nullable = true)
-//	private TipoPagamentoEntity tipoPagamento;
 	@Enumerated(EnumType.STRING)
 	private StatusPedido status;
     @ManyToOne
     @JoinColumn(name = "cliente_id", nullable = true)
 	private ClienteEntity cliente;
-
-//	@Enumerated(EnumType.STRING)
-//	private StatusPagamento statusPagamento;
 
 	private OffsetDateTime dataSolicitacao;
 	private OffsetDateTime dataCancelamento;
@@ -59,14 +53,6 @@ public class PedidoEntity {
 	public void setValor(BigDecimal valor) {
 		this.valor = valor;
 	}
-
-//	public TipoPagamentoEntity getTipoPagamento() {
-//		return tipoPagamento;
-//	}
-//
-//	public void setTipoPagamento(TipoPagamentoEntity tipoPagamento) {
-//		this.tipoPagamento = tipoPagamento;
-//	}
 
 	public StatusPedido getStatus() {
 		return status;
@@ -111,6 +97,10 @@ public class PedidoEntity {
 	public Long getId() {
 		return id;
 	}
+	
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public void setPaymentId(Long paymentId) {
 		this.paymentId = paymentId;
@@ -120,11 +110,20 @@ public class PedidoEntity {
 		return paymentId;
 	}
 
-//	public StatusPagamento getStatusPagamento() {
-//		return statusPagamento;
-//	}
-//
-//	public void setStatusPagamento(StatusPagamento statusPagamento) {
-//		this.statusPagamento = statusPagamento;
-//	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		PedidoEntity other = (PedidoEntity) obj;
+		return Objects.equals(id, other.id);
+	}
 }

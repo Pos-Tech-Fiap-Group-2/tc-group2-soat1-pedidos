@@ -35,8 +35,6 @@ public class PedidoGatewayImpl implements PedidoGateway {
     private PedidoEntityMapper mapper;
     @Autowired
     private PedidoBusinessMapper businessMapper;
-//    @Autowired
-//    private TipoPagamentoEntityMapper pagamentoEntityMapper;
     
     public List<Pedido> buscarPedidos() {
         return businessMapper.toCollectionModel(repository.findAll());
@@ -48,13 +46,6 @@ public class PedidoGatewayImpl implements PedidoGateway {
         
     	return businessMapper.toModel(entity);
     }
-
-//    public Pedido buscarPedidoPorPaymentId(Long paymentId) {
-//        PedidoEntity entity = repository.findByPaymentId(paymentId).orElseThrow(() -> new EntidadeNaoEncontradaException(
-//                String.format(MSG_PEDIDO_NAO_ENCONTRADO, paymentId)));
-//
-//    	return businessMapper.toModel(entity);
-//    }
 
     public List<Pedido> buscarPedidosPorStatus(StatusPedido statusPedido) {
         return businessMapper.toCollectionModel(repository.findByStatus(statusPedido));
@@ -76,24 +67,6 @@ public class PedidoGatewayImpl implements PedidoGateway {
         repository.save(entity);
     }
     
-//	@Override
-//	public void atualizarStatusPagamento(Long id, StatusPagamento statusPagamento) {
-//		this.atualizarStatusDoPedidoEPagamento(id, null, statusPagamento);
-//	}
-    
-//    @Transactional
-//    public void atualizarStatusDoPedidoEPagamento(Long pedidoId, StatusPedido statusPedido, StatusPagamento statusPagamento) {
-//    	PedidoEntity entity = repository.findById(pedidoId).orElseThrow(() -> new EntidadeNaoEncontradaException(
-//                String.format(MSG_PEDIDO_NAO_ENCONTRADO, pedidoId)));
-//
-//    	if (statusPedido != null) {
-//    		entity.setStatus(statusPedido);	
-//    	}
-//    	
-//    	entity.setStatusPagamento(statusPagamento);
-//    	repository.save(entity);
-//    }
-    
     @Transactional
     public void excluir(Long pedidoId) {
     	try {
@@ -105,27 +78,6 @@ public class PedidoGatewayImpl implements PedidoGateway {
 			throw new EntidadeNaoEncontradaException(String.format(MSG_PEDIDO_NAO_ENCONTRADO, pedidoId));
 		}
     }
-
-//	@Override
-//	@Transactional
-//	public void atualizarTipoPagamento(Long id, TipoPagamento tipoPagamento) {
-//        PedidoEntity entity = repository.findByIdAndStatus(id, StatusPedido.RECEBIDO).orElseThrow(() -> new EntidadeNaoEncontradaException(
-//                String.format(MSG_PEDIDO_STATUS_NAO_ENCONTRADO, id)));
-//        
-//        TipoPagamentoEntity pagamentoEntity = pagamentoEntityMapper.toModel(tipoPagamento);
-//        
-//        entity.setStatus(StatusPedido.PREPARACAO);
-//        entity.setTipoPagamento(pagamentoEntity);
-//	}
-
-//    @Override
-//    @Transactional
-//    public void atualizarPaymentId(Long id, Long paymentId) {
-//        PedidoEntity entity = repository.findByIdAndStatus(id, StatusPedido.PREPARACAO).orElseThrow(() -> new EntidadeNaoEncontradaException(
-//                String.format(MSG_PEDIDO_STATUS_NAO_ENCONTRADO, id)));
-//
-//        entity.setPaymentId(paymentId);
-//    }
 
 	@Override
 	public Pedido gravar(Pedido pedido) {

@@ -1,5 +1,7 @@
 package com.techchallenge.pedidos.adapter.driver.model.input;
 
+import javax.validation.constraints.NotNull;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.annotations.ApiModelProperty;
@@ -8,13 +10,16 @@ public class ClienteInput {
 
 	@ApiModelProperty(example = "Nome do cliente")
 	@JsonProperty(required = true)
+	@NotNull
 	private String nome;
 	
 	@ApiModelProperty(example = "cliente-teste@teste.com.br")
+	@NotNull
 	private String email;
 	
 	@ApiModelProperty(example = "12345678901")
 	@JsonProperty(required = true)
+	@NotNull
 	private Long cpf;
 
 	public String getNome() {

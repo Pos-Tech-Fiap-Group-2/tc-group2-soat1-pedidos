@@ -1,0 +1,7 @@
+{
+ "nome": "Cheeseburger com duplo de carne e queijo",
+ "categoriaId": 1,
+ "preco" : "20.99",
+ "descricao" : "Cheeseburger duplo",
+ "imagem" : "/cheeseburger.png"
+}

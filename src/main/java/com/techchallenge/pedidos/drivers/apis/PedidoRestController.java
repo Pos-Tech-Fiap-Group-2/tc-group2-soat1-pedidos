@@ -112,15 +112,4 @@ public class PedidoRestController {
 	public void remover(@PathVariable Long id, @RequestBody @Valid ItemPedidoInput input) {
 		this.controller.remover(id, input);
 	}
-
-//    @ApiOperation(" Consultar o status de pagamento do pedido, informando se o pagamento foi aprovado ou não")
-//    @ApiResponses({
-//            @ApiResponse(code = 200, message = "Status de pagamento do pedido"),
-//            @ApiResponse(code = 404, message = "Pedido não encontrado com o ID informado", response = Problem.class)
-//
-//    })
-//    @GetMapping(value = "/{id}/pagamento-status")
-//    public String buscarStatusDePagamentoDoPedido(@ApiParam(value = "ID do pedido", example = "12345678") @PathVariable Long id) {
-//    	return this.controller.buscarStatusDePagamentoDoPedido(id);
-//    }
 }
