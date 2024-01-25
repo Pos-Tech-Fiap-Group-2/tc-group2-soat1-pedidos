@@ -8,7 +8,7 @@ Funcionalidade: API - Produtos
   Cenário: Listar produtos por código de categoria
   	Dado um código de categoria para consulta
     Quando solicitar a lista de produtos da categoria
-    Então a lista de produtos é retornada com sucesso
+    Então a lista de produtos por código é retornada com sucesso
     
   Cenário: Listar produtos por nome de categoria
   	Dado um nome de categoria para consulta

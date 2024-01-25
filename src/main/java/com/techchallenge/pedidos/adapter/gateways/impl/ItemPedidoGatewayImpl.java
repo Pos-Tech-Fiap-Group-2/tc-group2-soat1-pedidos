@@ -110,7 +110,7 @@ public class ItemPedidoGatewayImpl implements ItemPedidoGateway {
     	ItemPedido itemAtualizar = pedido.getItens().stream()
     			.filter(f -> f.getId().equals(itemPedido.getId()))
     			.findFirst()
-    			.orElseThrow(() -> new EntidadeNaoEncontradaException(String.format(MSG_ITEM_NAO_ENCONTRADO, pedidoId, produtoId)));;
+    			.orElseThrow(() -> new EntidadeNaoEncontradaException(String.format(MSG_ITEM_NAO_ENCONTRADO, pedidoId, produtoId)));
     	
     	// Atualiza valores com os quais foram consultados
     	itemAtualizar.setProduto(produto);

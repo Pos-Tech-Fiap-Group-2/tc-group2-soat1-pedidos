@@ -6,7 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 import com.techchallenge.pedidos.adapter.driver.model.input.ClienteInput;
-import com.techchallenge.pedidos.utils.ResourceUtil;
 
 import io.cucumber.java.pt.Dado;
 import io.cucumber.java.pt.Então;
@@ -43,7 +42,16 @@ public class ClienteBDDPassos {
 				.when()
 				.get(ENDPOINT_CLIENTES + "/{cpf}");
 	}
-
+	
+	private void removerClienteAposStep() {
+		// Remove cliente registrado...
+		response = given()
+				.contentType(MediaType.APPLICATION_JSON_VALUE)
+				.pathParam("id", idCliente)
+				.when()
+				.delete(ENDPOINT_CLIENTES + "/{id}");
+	}
+	
 	@Quando("Solicitar a gravação dos dados do cliente")
 	public void gravarCliente() {
 		ClienteInput input = createClienteInput(12345678901L, "cliente.teste@teste.com.br", "Cliente Teste");
@@ -53,23 +61,33 @@ public class ClienteBDDPassos {
 	@Então("o cliente é cadastrado com sucesso na plataforma.")
 	public void clienteRegistradoComSucesso() {
 		response.then().statusCode(HttpStatus.CREATED.value());
+		
+		String idValue = response.getBody().jsonPath().getJsonObject("id").toString();
+		idCliente = Long.valueOf(idValue);
+		
+		removerClienteAposStep();
 	}
 
 	@Dado("que um cliente já existente na plataforma")
 	public void consultarClienteNaPlataforma() {
+		ClienteInput input = createClienteInput(12345678901L, "cliente.teste@teste.com.br", "Cliente Teste");
+		response = adicionarCliente(input);
+		
 		response = consultarCliente(12345678901L);
 		response.then().statusCode(HttpStatus.OK.value());
+		
+		String idValue = response.getBody().jsonPath().getJsonObject("id").toString();
+		idCliente = Long.valueOf(idValue);
 	}
 
 	@Quando("requisitar atualização dos dados do cliente")
 	public void atualizarDadosDoCliente() {
-		String content = ResourceUtil.getContentFromResource(
-				"/json/correto/cliente-atualizacao-input-bdd.json");
+		ClienteInput input = createClienteInput(12345678901L, "cliente-alterado.teste@teste.com.br", "Cliente Teste Alterado");
 		
 		response = given()
 				.contentType(MediaType.APPLICATION_JSON_VALUE)
-				.pathParam("id", 1)
-				.body(content)
+				.pathParam("id", idCliente)
+				.body(input)
 				.when()
 				.patch(ENDPOINT_CLIENTES + "/{id}");
 	}
@@ -77,16 +95,26 @@ public class ClienteBDDPassos {
 	@Então("cliente é atualizado com sucesso")
 	public void clienteAtualizadoComSucesso() {
 		response.then().statusCode(HttpStatus.NO_CONTENT.value());
+		
+		removerClienteAposStep();
 	}
 	
 	@Quando("solicitar os dados de um cliente")
 	public void solicitarDadosDoCliente() {
+		ClienteInput input = createClienteInput(12345678901L, "cliente.teste@teste.com.br", "Cliente Teste");
+		response = adicionarCliente(input);
+		
 		response = consultarCliente(12345678901L);
 	}
 
 	@Então("os dados devem ser apresentados com sucesso")
 	public void dadosClienteRetornados() {
 		response.then().statusCode(HttpStatus.OK.value());
+		
+		String idValue = response.getBody().jsonPath().getJsonObject("id").toString();
+		idCliente = Long.valueOf(idValue);
+		
+		removerClienteAposStep();
 	}
 	
 	@Dado("que um cliente esteja cadastrado na plataforma")
@@ -100,11 +128,7 @@ public class ClienteBDDPassos {
 
 	@Quando("for solicitado a remoção do cliente")
 	public void requisitarRemocaoDoCliente() {
-		response = given()
-				.contentType(MediaType.APPLICATION_JSON_VALUE)
-				.pathParam("id", idCliente)
-				.when()
-				.delete(ENDPOINT_CLIENTES + "/{id}");
+		removerClienteAposStep();
 	}
 
 	@Então("o cliente deve ser removido da plataforma")

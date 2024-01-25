@@ -23,6 +23,7 @@ public class ItemPedidoApiMapper {
         
         itemPedido.setProduto(new Produto());
         itemPedido.getProduto().setId(input.getProdutoId());
+        itemPedido.setId(input.getItemPedidoId());
         
         return itemPedido;
     }

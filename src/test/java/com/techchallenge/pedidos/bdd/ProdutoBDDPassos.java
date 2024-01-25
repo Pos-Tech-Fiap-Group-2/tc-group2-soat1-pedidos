@@ -62,7 +62,10 @@ public class ProdutoBDDPassos {
 		idCategoria = 1L;
 		
 		ProdutoInput produto = createProdutoInput("Cheeseburger com duplo de carne e queijo", "/cheeseburger.png", "Cheeseburger duplo", new BigDecimal("20.99"), idCategoria);
-		adicionarProduto(produto);
+		response = adicionarProduto(produto);
+		
+		String idValue = response.getBody().jsonPath().getJsonObject("id").toString();
+		idProduto = Long.valueOf(idValue);
 	}
 	
 	@Quando("solicitar a lista de produtos da categoria")
@@ -74,13 +77,27 @@ public class ProdutoBDDPassos {
 					.get(ENDPOINT_PRODUTOS + "/categorias/codigo/{id}");
 	}
 	
+	@Então("a lista de produtos por código é retornada com sucesso")
+	public void asdsa() {
+		response.then().statusCode(HttpStatus.OK.value());
+		
+		response = given()
+				.contentType(MediaType.APPLICATION_JSON_VALUE)
+				.pathParam("id", idProduto)
+				.when()
+				.delete(ENDPOINT_PRODUTOS + "/{id}");
+	}
+	
 	@Dado("um nome de categoria para consulta")
 	public void adicionarProdutoERegistrarNomeCategoria() {
 		nomeCategoria = "Lanche";
 		idCategoria = 1L;
 		
 		ProdutoInput produto = createProdutoInput("Cheeseburger de carne e queijo", "/cheeseburger.png", "Cheeseburger", new BigDecimal("20.99"), idCategoria);
-		adicionarProduto(produto);
+		response = adicionarProduto(produto);
+		
+		String idValue = response.getBody().jsonPath().getJsonObject("id").toString();
+		idProduto = Long.valueOf(idValue);
 	}
 	
 	@Quando("solicitar a lista de produtos da categoria por nome")
@@ -95,6 +112,12 @@ public class ProdutoBDDPassos {
 	@Então("a lista de produtos por nome de categoria é retornada com sucesso")
 	public void listaProdutosComSucesso_porNomeCategoria() {
 		response.then().statusCode(HttpStatus.OK.value());
+		
+		response = given()
+				.contentType(MediaType.APPLICATION_JSON_VALUE)
+				.pathParam("id", idProduto)
+				.when()
+				.delete(ENDPOINT_PRODUTOS + "/{id}");
 		
 	}
 	
@@ -115,8 +138,17 @@ public class ProdutoBDDPassos {
 	}
 
 	@Então("novo produto deve ser adicionado com sucesso")
-	public void clienteAtualizadoComSucesso() {
+	public void produtoAdicionadoComSucesso() {
 		response.then().statusCode(HttpStatus.CREATED.value());
+		
+		String idValue = response.getBody().jsonPath().getJsonObject("id").toString();
+		idProduto = Long.valueOf(idValue);
+		
+		response = given()
+				.contentType(MediaType.APPLICATION_JSON_VALUE)
+				.pathParam("id", idProduto)
+				.when()
+				.delete(ENDPOINT_PRODUTOS + "/{id}");
 	}
 	
 	@Dado("que um produto esteja cadastrado na plataforma")
@@ -173,7 +205,13 @@ public class ProdutoBDDPassos {
 	}
 
 	@Então("produto deve ser atualizado com sucesso")
-	public void clienteRemovidoComSucesso() {
+	public void produtoAtualizadoComSucesso() {
 		response.then().statusCode(HttpStatus.NO_CONTENT.value());
+		
+		response = given()
+				.contentType(MediaType.APPLICATION_JSON_VALUE)
+				.pathParam("id", idProduto)
+				.when()
+				.delete(ENDPOINT_PRODUTOS + "/{id}");
 	}
 }
