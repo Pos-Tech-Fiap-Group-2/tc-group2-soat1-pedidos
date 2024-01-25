@@ -6,7 +6,7 @@ Funcionalidade: API - Clientes
     Então o cliente é cadastrado com sucesso na plataforma.
 
   Cenário: Atualizar cliente já cadastrado na plataforma
-    Dado requisitar atualização dos dados do cliente
+    Dado que um cliente já existente na plataforma
     Quando requisitar atualização dos dados do cliente
     Então cliente é atualizado com sucesso
 

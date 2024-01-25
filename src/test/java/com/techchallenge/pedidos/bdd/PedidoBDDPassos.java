@@ -13,7 +13,6 @@ import com.techchallenge.pedidos.adapter.driver.model.input.ClienteInput;
 import com.techchallenge.pedidos.adapter.driver.model.input.ProdutoInput;
 import com.techchallenge.pedidos.core.domain.entities.StatusPedido;
 
-import io.cucumber.java.pt.Dado;
 import io.cucumber.java.pt.Então;
 import io.cucumber.java.pt.Quando;
 import io.restassured.response.Response;
@@ -42,6 +41,16 @@ public class PedidoBDDPassos {
 	private Long idCliente;
 	
 	private Long idPedido;
+	
+	private Long idItemPedido;
+	
+	private Long randomCpf() {
+		long leftLimit = 1000000000L;
+	    long rightLimit = 9999999999L;
+	    long generatedLong = leftLimit + (long) (Math.random() * (rightLimit - leftLimit));
+	    
+	    return generatedLong;
+	}
 	
 	private ClienteInput createClienteInput(Long cpf, String email, String nome) {
 		ClienteInput input = new ClienteInput();
@@ -100,13 +109,19 @@ public class PedidoBDDPassos {
 		
 		String idValue = response.getBody().jsonPath().getJsonObject("id").toString();
 		idPedido = Long.valueOf(idValue);
+		
+		String idValueItem = response.getBody().jsonPath().getJsonObject("itens[0].id").toString();
+		idItemPedido = Long.valueOf(idValueItem);
+		
+		System.out.println("ID PEDIDO: " + idPedido);
 	}
 	
 	@Quando("solicitar a lista de pedidos cadastrados na plataforma")
 	public void listarPedidos() {
 		idCategoria = 1L;
+		long cpf = randomCpf();
 		
-		ClienteInput clienteInput = createClienteInput(9876543211L, "cliente-pedidos.teste01@teste.com.br", "Cliente Teste Pedidos 01");
+		ClienteInput clienteInput = createClienteInput(cpf, "cliente-pedidos."+cpf+"@teste.com.br", "Cliente Teste Pedidos "+cpf);
 		ProdutoInput produtoInput = createProdutoInput("Produto Teste Pedido 01", "/teste_pedido.png", "Produto Teste Pedido 01", new BigDecimal("25.99"), idCategoria);
 		
 		this.adicionarCliente(clienteInput);
@@ -127,8 +142,9 @@ public class PedidoBDDPassos {
 	@Quando("solicitar a lista de pedidos cadastrados na plataforma por status")
 	public void listarPedidosComStatus() {
 		idCategoria = 1L;
+		long cpf = randomCpf();
 		
-		ClienteInput clienteInput = createClienteInput(9876543212L, "cliente-pedidos.teste02@teste.com.br", "Cliente Teste Pedidos 02");
+		ClienteInput clienteInput = createClienteInput(cpf, "cliente-pedidos."+cpf+"@teste.com.br", "Cliente Teste Pedidos "+cpf);
 		ProdutoInput produtoInput = createProdutoInput("Produto Teste Pedido 02", "/teste_pedido.png", "Produto Teste Pedido 02", new BigDecimal("25.99"), idCategoria);
 		
 		this.adicionarCliente(clienteInput);
@@ -150,8 +166,9 @@ public class PedidoBDDPassos {
 	@Quando("consultar o pedido pelo id")
 	public void consultarPedidoPeloId() {
 		idCategoria = 1L;
+		long cpf = randomCpf();
 		
-		ClienteInput clienteInput = createClienteInput(9876543213L, "cliente-pedidos.teste03@teste.com.br", "Cliente Teste Pedidos 03");
+		ClienteInput clienteInput = createClienteInput(cpf, "cliente-pedidos."+cpf+"@teste.com.br", "Cliente Teste Pedidos "+cpf);
 		ProdutoInput produtoInput = createProdutoInput("Produto Teste Pedido 03", "/teste_pedido.png", "Produto Teste Pedido 03", new BigDecimal("25.99"), idCategoria);
 		
 		this.adicionarCliente(clienteInput);
@@ -173,8 +190,9 @@ public class PedidoBDDPassos {
 	@Quando("atualizar status do pedido na plataforma")
 	public void atualizarStatusDoPedido() {
 		idCategoria = 1L;
+		long cpf = randomCpf();
 		
-		ClienteInput clienteInput = createClienteInput(9876543214L, "cliente-pedidos.teste04@teste.com.br", "Cliente Teste Pedidos 04");
+		ClienteInput clienteInput = createClienteInput(cpf, "cliente-pedidos."+cpf+"@teste.com.br", "Cliente Teste Pedidos "+cpf);
 		ProdutoInput produtoInput = createProdutoInput("Produto Teste Pedido 04", "/teste_pedido.png", "Produto Teste Pedido 04", new BigDecimal("25.99"), idCategoria);
 		
 		this.adicionarCliente(clienteInput);
@@ -197,8 +215,9 @@ public class PedidoBDDPassos {
 	@Quando("adicionar itens ao pedido")
 	public void adicionarItensAoPedido() {
 		idCategoria = 1L;
+		long cpf = randomCpf();
 		
-		ClienteInput clienteInput = createClienteInput(9876543215L, "cliente-pedidos.teste05@teste.com.br", "Cliente Teste Pedidos 05");
+		ClienteInput clienteInput = createClienteInput(cpf, "cliente-pedidos."+cpf+"@teste.com.br", "Cliente Teste Pedidos "+cpf);
 		ProdutoInput produtoInput = createProdutoInput("Produto Teste Pedido 05", "/teste_pedido.png", "Produto Teste Pedido 05", new BigDecimal("25.99"), idCategoria);
 		
 		this.adicionarCliente(clienteInput);
@@ -226,20 +245,24 @@ public class PedidoBDDPassos {
 	@Quando("atualizar itens ao pedido")
 	public void atualizarItensAoPedido() {
 		idCategoria = 1L;
+		long cpf = randomCpf();
 		
-		ClienteInput clienteInput = createClienteInput(9876543216L, "cliente-pedidos.teste06@teste.com.br", "Cliente Teste Pedidos 06");
+		ClienteInput clienteInput = createClienteInput(cpf, "cliente-pedidos."+cpf+"@teste.com.br", "Cliente Teste Pedidos "+cpf);
 		ProdutoInput produtoInput = createProdutoInput("Produto Teste Pedido 07", "/teste_pedido.png", "Produto Teste Pedido 07", new BigDecimal("25.99"), idCategoria);
 		
 		this.adicionarCliente(clienteInput);
 		this.adicionarProduto(produtoInput);
 		this.efetuarCheckout();
 		
-		CheckoutItemStub itemStub = new CheckoutItemStub(2, idProduto);
+		System.out.println("ID PEDIDO: " + idPedido);
+		System.out.println("ID PRODUTO: " + idProduto);
+		
+		CheckoutItemStub itemStubAtualizar = new CheckoutItemStub(2, idProduto, idItemPedido);
 		
 		response = given()
 				.contentType(MediaType.APPLICATION_JSON_VALUE)
 				.pathParam("id", idPedido)
-				.body(itemStub)
+				.body(itemStubAtualizar)
 				.when()
 				.put(ENDPOINT_PEDIDOS + "/{id}/items");
 	}
@@ -252,8 +275,9 @@ public class PedidoBDDPassos {
 	@Quando("remover item do pedido")
 	public void removerItemPedido() {
 		idCategoria = 1L;
+		long cpf = randomCpf();
 		
-		ClienteInput clienteInput = createClienteInput(9876543217L, "cliente-pedidos.teste07@teste.com.br", "Cliente Teste Pedidos 07");
+		ClienteInput clienteInput = createClienteInput(cpf, "cliente-pedidos."+cpf+"@teste.com.br", "Cliente Teste Pedidos "+cpf);
 		ProdutoInput produtoInput = createProdutoInput("Produto Teste Pedido 08", "/teste_pedido.png", "Produto Teste Pedido 08", new BigDecimal("25.99"), idCategoria);
 		
 		this.adicionarCliente(clienteInput);
@@ -312,6 +336,13 @@ public class PedidoBDDPassos {
 			this.produtoId = produtoId;
 		}
 		
+		public CheckoutItemStub(int quantidade, Long produtoId, Long itemPedidoId) {
+			this.itemPedidoId = itemPedidoId;
+			this.quantidade = quantidade;
+			this.produtoId = produtoId;
+		}
+		
+		private Long itemPedidoId;
 		private int quantidade;
 		private Long produtoId;
 		
@@ -320,6 +351,9 @@ public class PedidoBDDPassos {
 		}
 		public Long getProdutoId() {
 			return produtoId;
+		}
+		public Long getItemPedidoId() {
+			return itemPedidoId;
 		}
 	}
 }

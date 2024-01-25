@@ -53,8 +53,18 @@ public class CheckoutBDDPassos {
 		return produto;
 	}
 	
+	private Long randomCpf() {
+		long leftLimit = 1000000000L;
+	    long rightLimit = 9999999999L;
+	    long generatedLong = leftLimit + (long) (Math.random() * (rightLimit - leftLimit));
+	    
+	    return generatedLong;
+	}
+	
 	private void adicionarCliente() {
-		ClienteInput input = createClienteInput(9876543210L, "cliente-checkout.teste@teste.com.br", "Cliente Teste Checkout");
+		
+		Long cpf = randomCpf();
+		ClienteInput input = createClienteInput(cpf, "cliente-checkout" + cpf + ".teste@teste.com.br", "Cliente Teste Checkout " + cpf);
 		
 		response = given().contentType(MediaType.APPLICATION_JSON_VALUE).body(input)
 				.post(ENDPOINT_CLIENTES);

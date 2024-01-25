@@ -323,23 +323,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-failsafe-plugin</artifactId>
-				<executions>
-					<execution>
-						<goals>
-							<goal>integration-test</goal>
-							<goal>verify</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<includes>
-						<include>**/*IntegrationTest.java</include>
-					</includes>
-				</configuration>
-			</plugin>
 		</plugins>
 		<finalName>${project.artifactId}</finalName>
 	</build>
@@ -380,18 +363,20 @@
 				<plugins>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-surefire-plugin</artifactId>
-						<version>3.1.2</version>
+						<artifactId>maven-failsafe-plugin</artifactId>
+						<executions>
+							<execution>
+								<goals>
+									<goal>integration-test</goal>
+									<goal>verify</goal>
+								</goals>
+							</execution>
+						</executions>
 						<configuration>
-							<includes combine.self="override">
-								<include>**/bdd/**</include>
+							<includes>
+								<include>**/*IntegrationTest.java</include>
+		                        <include>**/*BDD*.java</include>
 							</includes>
-							<excludes combine.self="override"></excludes>
-							<properties>
-								<configurationParameters>
-                                    cucumber.junit-platform.naming-strategy=long
-                                </configurationParameters>
-							</properties>
 						</configuration>
 					</plugin>
 				</plugins>
