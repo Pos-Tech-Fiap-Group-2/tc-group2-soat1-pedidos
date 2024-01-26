@@ -26,9 +26,14 @@
 			**/exception/*,
 			**/entities/*,
 			**/model/*,
+			**/opeanapi/**,
+			**/core/opeanapi/**,
+			**/opeanapi/adapter/**,
 			**/input/*,
+			**/dto/**,
 			**/TechChallengePagamentosApplication.java,
-			**/ValidacaoException.java
+			**/ValidacaoException.java,
+			**/MercadoPagoException.java
 	    </sonar.exclusions>
 	</properties>
 
