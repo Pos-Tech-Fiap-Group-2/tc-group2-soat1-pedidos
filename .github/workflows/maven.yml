@@ -43,6 +43,9 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
+        
+    - name: Print name
+      run: echo "Testting print ${{secrets.SONAR_TOKEN}}"
 
     - name: Cache the Maven
       uses: actions/cache@v2
