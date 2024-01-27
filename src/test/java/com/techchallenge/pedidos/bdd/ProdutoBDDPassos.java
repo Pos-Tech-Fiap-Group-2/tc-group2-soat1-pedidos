@@ -2,7 +2,10 @@ package com.techchallenge.pedidos.bdd;
 
 import static io.restassured.RestAssured.given;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
+import java.util.Properties;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,7 +27,20 @@ public class ProdutoBDDPassos {
 	
 	private Long idProduto;
 
-	private final static String ENDPOINT_PRODUTOS = "http://localhost:8080/api/produtos";
+	private static String ENDPOINT_PRODUTOS;
+	
+	static {
+		Properties prop = new Properties();
+		InputStream is = CategoriaBDDPassos.class.getResourceAsStream("/bdd-config.properties");
+		
+		try {
+			prop.load(is);
+			ENDPOINT_PRODUTOS = prop.getProperty("bdd.endpoint.produtos.url");
+			
+		} catch (IOException e) {
+			
+		}
+	}
 	
 	private ProdutoInput createProdutoInput(String descricao, String imagem, String nome, BigDecimal preco, Long categoriaId) {
 		ProdutoInput produto = new ProdutoInput();

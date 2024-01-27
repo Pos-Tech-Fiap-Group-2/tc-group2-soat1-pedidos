@@ -44,47 +44,47 @@ public class TypeNameExtractorAdapter extends TypeNameExtractor {
 	}
 
 	public String typeName(ModelContext context) {
-		ResolvedType type = asResolved(context.getType());
+		ResolvedType type = resolveType(context.getType());
 		if (isContainerType(type)) {
 			return containerType(type);
 		}
-		return innerTypeName(type, context);
+		return generateInnerTypeName(type, context);
 	}
 
-	private ResolvedType asResolved(Type type) {
+	private ResolvedType resolveType(Type type) {
 		return typeResolver.resolve(type);
 	}
 
-	private String genericTypeName(ResolvedType resolvedType, ModelContext context) {
+	private String generateTypeName(ResolvedType resolvedType, ModelContext context) {
 		Class<?> erasedType = resolvedType.getErasedType();
 		GenericTypeNamingStrategy namingStrategy = context.getGenericNamingStrategy();
 		ModelNameContext nameContext = new ModelNameContext(resolvedType.getErasedType(),
 				context.getDocumentationType());
-		String simpleName = fromNullable(typeNameFor(erasedType)).or(typeName(nameContext));
+		String simpleName = fromNullable(typeNameFor(erasedType)).or(generateTypeName(nameContext));
 		StringBuilder sb = new StringBuilder(String.format("%s%s", simpleName, namingStrategy.getOpenGeneric()));
 		boolean first = true;
 		for (int index = 0; index < erasedType.getTypeParameters().length; index++) {
 			ResolvedType typeParam = resolvedType.getTypeParameters().get(index);
 			if (first) {
-				sb.append(innerTypeName(typeParam, context));
+				sb.append(generateInnerTypeName(typeParam, context));
 				first = false;
 			} else {
 				sb.append(String.format("%s%s", namingStrategy.getTypeListDelimiter(),
-						innerTypeName(typeParam, context)));
+						generateInnerTypeName(typeParam, context)));
 			}
 		}
 		sb.append(namingStrategy.getCloseGeneric());
 		return sb.toString();
 	}
 
-	private String innerTypeName(ResolvedType type, ModelContext context) {
+	private String generateInnerTypeName(ResolvedType type, ModelContext context) {
 		if (type.getTypeParameters().size() > 0 && type.getErasedType().getTypeParameters().length > 0) {
-			return genericTypeName(type, context);
+			return generateTypeName(type, context);
 		}
-		return simpleTypeName(type, context);
+		return generateSimpleTypeName(type, context);
 	}
 
-	private String simpleTypeName(ResolvedType type, ModelContext context) {
+	private String generateSimpleTypeName(ResolvedType type, ModelContext context) {
 		Class<?> erasedType = type.getErasedType();
 		if (type instanceof ResolvedPrimitiveType) {
 			return typeNameFor(erasedType);
@@ -93,17 +93,17 @@ public class TypeNameExtractorAdapter extends TypeNameExtractor {
 		} else if (type instanceof ResolvedArrayType) {
 			GenericTypeNamingStrategy namingStrategy = context.getGenericNamingStrategy();
 			return String.format("Array%s%s%s", namingStrategy.getOpenGeneric(),
-					simpleTypeName(type.getArrayElementType(), context), namingStrategy.getCloseGeneric());
+					generateSimpleTypeName(type.getArrayElementType(), context), namingStrategy.getCloseGeneric());
 		} else if (type instanceof ResolvedObjectType) {
 			String typeName = typeNameFor(erasedType);
 			if (typeName != null) {
 				return typeName;
 			}
 		}
-		return typeName(new ModelNameContext(type.getErasedType(), context.getDocumentationType()));
+		return generateTypeName(new ModelNameContext(type.getErasedType(), context.getDocumentationType()));
 	}
 
-	private String typeName(ModelNameContext context) {
+	private String generateTypeName(ModelNameContext context) {
 		TypeNameProviderPlugin selected = typeNameProviders.getPluginOrDefaultFor(context.getDocumentationType(),
 				new DefaultTypeNameProvider());
 		return selected.nameFor(context.getType());

@@ -2,6 +2,10 @@ package com.techchallenge.pedidos.bdd;
 
 import static io.restassured.RestAssured.given;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
@@ -13,7 +17,20 @@ public class CategoriaBDDPassos {
 
 	private Response response;
 
-	private String ENDPOINT_CATEGORIAS = "http://localhost:8080/api/categorias";
+	private static String ENDPOINT_CATEGORIAS;
+	
+	static {
+		Properties prop = new Properties();
+		InputStream is = CategoriaBDDPassos.class.getResourceAsStream("/bdd-config.properties");
+		
+		try {
+			prop.load(is);
+			ENDPOINT_CATEGORIAS = prop.getProperty("bdd.endpoint.categorias.url");
+			
+		} catch (IOException e) {
+			
+		}
+	}
 	
 	@Quando("Solicitar todas as categorias")
 	public void adicionarPedidoAFila() {

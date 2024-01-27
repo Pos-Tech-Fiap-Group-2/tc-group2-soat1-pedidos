@@ -2,6 +2,10 @@ package com.techchallenge.pedidos.bdd;
 
 import static io.restassured.RestAssured.given;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
@@ -18,7 +22,20 @@ public class ClienteBDDPassos {
 	
 	private Long idCliente;
 
-	private final static String ENDPOINT_CLIENTES = "http://localhost:8080/api/clientes";
+	private static String ENDPOINT_CLIENTES;
+	
+	static {
+		Properties prop = new Properties();
+		InputStream is = CategoriaBDDPassos.class.getResourceAsStream("/bdd-config.properties");
+		
+		try {
+			prop.load(is);
+			ENDPOINT_CLIENTES = prop.getProperty("bdd.endpoint.clientes.url");
+			
+		} catch (IOException e) {
+			
+		}
+	}
 	
 	private ClienteInput createClienteInput(Long cpf, String email, String nome) {
 		ClienteInput input = new ClienteInput();

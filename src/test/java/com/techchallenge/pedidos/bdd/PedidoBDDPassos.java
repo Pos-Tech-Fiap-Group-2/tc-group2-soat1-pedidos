@@ -2,9 +2,12 @@ package com.techchallenge.pedidos.bdd;
 
 import static io.restassured.RestAssured.given;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,18 +22,14 @@ import io.restassured.response.Response;
 
 public class PedidoBDDPassos {
 
-	// PRE REQUISITOS PARA PEDIDOS
-	// 1 - Adicionar cliente
-	// 2 - Cadastrar produto
-	// 3 - Efetuar checkout
 	
-	private final static String ENDPOINT_CLIENTES = "http://localhost:8080/api/clientes";
+	private static String ENDPOINT_CLIENTES;
 	
-	private final static String ENDPOINT_PRODUTOS = "http://localhost:8080/api/produtos";
+	private static String ENDPOINT_PRODUTOS;
 	
-	private final static String ENDPOINT_CHECKOUT = "http://localhost:8080/api/checkout";
+	private static String ENDPOINT_CHECKOUT;
 	
-	private final static String ENDPOINT_PEDIDOS = "http://localhost:8080/api/pedidos";
+	private static String ENDPOINT_PEDIDOS;
 	
 	private Response response;
 	
@@ -43,6 +42,22 @@ public class PedidoBDDPassos {
 	private Long idPedido;
 	
 	private Long idItemPedido;
+	
+	static {
+		Properties prop = new Properties();
+		InputStream is = CategoriaBDDPassos.class.getResourceAsStream("/bdd-config.properties");
+		
+		try {
+			prop.load(is);
+			ENDPOINT_CLIENTES = prop.getProperty("bdd.endpoint.clientes.url");
+			ENDPOINT_PRODUTOS = prop.getProperty("bdd.endpoint.produtos.url");
+			ENDPOINT_CHECKOUT = prop.getProperty("bdd.endpoint.checkout.url");
+			ENDPOINT_PEDIDOS = prop.getProperty("bdd.endpoint.pedidos.url");
+			
+		} catch (IOException e) {
+			
+		}
+	}
 	
 	private Long randomCpf() {
 		long leftLimit = 1000000000L;
