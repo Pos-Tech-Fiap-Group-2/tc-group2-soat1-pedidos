@@ -30,34 +30,20 @@ jobs:
           ${{ runner.os }}-ms
     - name: Build and Test Project
       run: mvn -B package --file pom.xml
-      
+
   sonar-cloud:
     needs: [tests]
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       with:
         fetch-depth: 0
     - name: Run SonarCloud to quality gate
       run: mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=tech-challenge-goup2-soat1-local_tc-group2-soat1-pedidos
-      
-  sonar-cloud-test:
-    needs: [tests]
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-      with:
-        # Disabling shallow clone is recommended for improving relevancy of reporting
-        fetch-depth: 0
-        args: >
-          -Dsonar.organization=tech-challenge-goup2-soat1-local
-          -Dsonar.projectKey=tech-challenge-goup2-soat1-local_tc-group2-soat1-pedidos
-    - name: SonarCloud Scan
-      uses: sonarsource/sonarcloud-github-action@master
-      env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
+            
   build:
     needs: [sonar-cloud-test]
     runs-on: ubuntu-latest
