@@ -44,9 +44,6 @@ jobs:
         distribution: 'temurin'
         cache: maven
         
-    - name: Print name
-      run: echo "Testting print ${{secrets.SONAR_TOKEN}}"
-
     - name: Cache the Maven
       uses: actions/cache@v2
       with:
@@ -54,10 +51,10 @@ jobs:
         key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
         restore-keys: |
           ${{ runner.os }}-ms
-    - name: Build and Test Project
+    - name: Run Sonar Cloud to quality gate
       env:
-        SONAR_TOKEN: ca7b5a07d4ef3bf8c2da462d3e90daa52a15c2d2
-      run: mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=tech-challenge-goup2-soat1-local_tc-group2-soat1-pedidos
+        SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
+      run: mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
             
   build:
     needs: [sonar-cloud]
