@@ -24,7 +24,7 @@
 		<sonar.language>java</sonar.language>
 		<sonar.organization>tech-challenge-goup2-soat1-local</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
-		<sonar.projectKey>tech-challenge-goup2-soat1-local_tc-group2-soat1-pedidos</sonar.projectKey>
+		<sonar.projectKey>tech-challenge-goup2-soat1-local_tc-challenge-group2-soat1-pedidos</sonar.projectKey>
 		<sonar.scanner.force-deprecated-java-version>true</sonar.scanner.force-deprecated-java-version>
 		<sonar.exclusions>
 			**/entities/*,
