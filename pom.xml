@@ -13,6 +13,7 @@
 	<name>tc-challenge-group2-soat1-pedidos</name>
 	<description>Projeto Pós Software Architecture</description>
 
+	<!-- Alteração para verificar se o SonarCloud pega o coverage. -->
 	<properties>
 		<java.version>11</java.version>
 		<spring-fox.version>2.9.2</spring-fox.version>
