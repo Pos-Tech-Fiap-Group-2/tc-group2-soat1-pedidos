@@ -47,7 +47,7 @@ jobs:
     - name: Cache the Maven
       uses: actions/cache@v2
       env:
-        SONAR_TOKEN: ${{ vars.SONAR_TOKEN }}
+        SONAR_TOKEN: ca7b5a07d4ef3bf8c2da462d3e90daa52a15c2d2
       with:
         path: ~/.m2
         key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
