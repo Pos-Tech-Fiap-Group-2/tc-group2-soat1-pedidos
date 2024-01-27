@@ -37,12 +37,24 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Set up JDK 11
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+        cache: maven
+
+    - name: Cache the Maven
+      uses: actions/cache@v2
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       with:
-        fetch-depth: 0
-    - name: Run SonarCloud to quality gate
-      run: mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=tech-challenge-goup2-soat1-local_tc-group2-soat1-pedidos
+        path: ~/.m2
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-ms
+    - name: Build and Test Project
+      run: mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=tech-challenge-goup2-soat1-local_tc-group2-soat1-pedidos
             
   build:
     needs: [sonar-cloud]
