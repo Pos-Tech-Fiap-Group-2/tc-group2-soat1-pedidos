@@ -7,7 +7,7 @@ services:
       dockerfile: .docker/Dockerfile
       # Argumento a ser passado para o Dockerfile indicando o nome do artefato para cópia.
       args: 
-        JAR_FILE: tech-challenge-group2-soat1.jar
+        JAR_FILE: tc-challenge-group2-soat1-pedidos.jar
     # Adicionei como se fosse um "healthcheck". Se trata de um script que fica pingando o serviço e 
     # "prende" o start do container até que tenha uma resposta dentro do tempo parametrizado. 
     # Caso contrário, retorna um signal code de erro e o container encerra a execução.
@@ -19,8 +19,9 @@ services:
       DB_HOST: "tech-challenge-db:3306"
       DB_USER: root
       DB_PASSWORD: root
+      URL_MICROSERVICO_PRODUCAO: "tech-challenge-api-producao:8080"
     ports:
-      - "8080:8080"
+      - "8081:8080"
     networks:
       - tech-challenge-network
     depends_on:
@@ -38,10 +39,11 @@ services:
       - .docker/mysql/data:/var/lib/mysql
       - .docker/mysql/my.cnf:/etc/mysql/my.cnf
     ports:
-      - "3306:3306"
+      - "3307:3306"
     networks:
       - tech-challenge-network
 
 networks:
-    tech-challenge-network:
-        driver: bridge
+  tech-challenge-network:
+    external:
+      name: tech-challenge-network
