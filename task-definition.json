@@ -15,7 +15,20 @@
         }
       ],
       "essential": true,
-      "environment": [],
+      "environment": [
+        {
+          "name":"DB_HOST",
+          "value":"tech-challenge-db.cluster-c1ssc6e4s6n7.us-east-1.rds.amazonaws.com"
+        },
+        {
+          "name": "DB_USER",
+          "value": "root"
+        },
+        {
+          "name": "DB_PASSWORD",
+          "value":"roottech"
+        }
+      ],
       "environmentFiles": [],
       "mountPoints": [],
       "volumesFrom": [],
