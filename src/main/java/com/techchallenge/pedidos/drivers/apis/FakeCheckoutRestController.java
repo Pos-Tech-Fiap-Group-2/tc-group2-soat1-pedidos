@@ -21,7 +21,7 @@ import io.swagger.annotations.ApiResponses;
 
 @Api(tags = "Checkout")
 @RestController
-@RequestMapping(value = "/checkout", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/checkout", produces = MediaType.APPLICATION_JSON_VALUE)
 public class FakeCheckoutRestController {
 	
     @Autowired

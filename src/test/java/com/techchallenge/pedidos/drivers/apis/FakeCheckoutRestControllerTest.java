@@ -92,7 +92,7 @@ public class FakeCheckoutRestControllerTest {
 		String content = ResourceUtil.getContentFromResource(
 				"/json/correto/fake-checkout-input.json");
 		
-		mockMvc.perform(post("/checkout").contentType(MediaType.APPLICATION_JSON).content(content))
+		mockMvc.perform(post("/api/checkout").contentType(MediaType.APPLICATION_JSON).content(content))
 			.andExpect(status().isOk());
 		
 		verify(controller, times(1)).checkout(any(PedidoInput.class));

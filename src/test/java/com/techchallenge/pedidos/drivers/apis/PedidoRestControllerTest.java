@@ -260,7 +260,7 @@ public class PedidoRestControllerTest {
 		
     	when(controller.buscarPedidosPorId(pedido.getId())).thenReturn(model);
     	
-		mockMvc.perform(get("/pedidos/1")
+		mockMvc.perform(get("/api/pedidos/1")
 			      .contentType(MediaType.APPLICATION_JSON))
 			      .andExpect(status().isOk())
 			      .andExpect(jsonPath("$.id").value(model.getId()))
@@ -287,7 +287,7 @@ public class PedidoRestControllerTest {
     	
     	when(controller.listarPedidos(StatusPedido.RECEBIDO)).thenReturn(models);
     	
-		mockMvc.perform(get("/pedidos?status=RECEBIDO")
+		mockMvc.perform(get("/api/pedidos?status=RECEBIDO")
 			      .contentType(MediaType.APPLICATION_JSON))
 			      .andExpect(status().isOk());
 		
@@ -307,7 +307,7 @@ public class PedidoRestControllerTest {
     	
     	when(controller.listarPedidos()).thenReturn(models);
     	
-		mockMvc.perform(get("/pedidos")
+		mockMvc.perform(get("/api/pedidos")
 			      .contentType(MediaType.APPLICATION_JSON))
 			      .andExpect(status().isOk());
 		
@@ -322,7 +322,7 @@ public class PedidoRestControllerTest {
 		
 		doNothing().when(controller).atualizarStatusDoPedido(1L, StatusPedido.PRONTO.name());
 		
-		mockMvc.perform(patch("/pedidos/1/status")
+		mockMvc.perform(patch("/api/pedidos/1/status")
 			      .contentType(MediaType.APPLICATION_JSON).content(content))
 			      .andExpect(status().isNoContent());
 		
@@ -345,7 +345,7 @@ public class PedidoRestControllerTest {
 		
 		when(controller.adicionarProduto(1L, itemPedidoInput)).thenReturn(model);
 		
-		mockMvc.perform(post("/pedidos/1/items").contentType(MediaType.APPLICATION_JSON).content(content))
+		mockMvc.perform(post("/api/pedidos/1/items").contentType(MediaType.APPLICATION_JSON).content(content))
 			.andExpect(status().isOk());
 		
 		verify(controller, times(1)).adicionarProduto(any(Long.class), any(ItemPedidoInput.class));
@@ -366,7 +366,7 @@ public class PedidoRestControllerTest {
 		String content = ResourceUtil.getContentFromResource(
 				"/json/correto/item-pedido-input.json");
 		
-		mockMvc.perform(put("/pedidos/1/items")
+		mockMvc.perform(put("/api/pedidos/1/items")
 			      .contentType(MediaType.APPLICATION_JSON).content(content))
 			      .andExpect(status().isNoContent());
 		
@@ -388,7 +388,7 @@ public class PedidoRestControllerTest {
 		String content = ResourceUtil.getContentFromResource(
 				"/json/correto/item-pedido-exclusao-input.json");
 		
-		mockMvc.perform(delete("/pedidos/1/items")
+		mockMvc.perform(delete("/api/pedidos/1/items")
 			      .contentType(MediaType.APPLICATION_JSON).content(content))
 			      .andExpect(status().isNoContent());
 		

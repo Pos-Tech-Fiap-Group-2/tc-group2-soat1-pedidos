@@ -160,7 +160,7 @@ public class ProdutoRestControllerTest {
     @Test
     public void listar() throws Exception {
     	
-		mockMvc.perform(get("/produtos")
+		mockMvc.perform(get("/api/produtos")
 			      .contentType(MediaType.APPLICATION_JSON))
 			      .andExpect(status().isOk());
 				
@@ -179,7 +179,7 @@ public class ProdutoRestControllerTest {
     	
     	when(controller.listarPorCategoria("Lanche")).thenReturn(models);
     	
-		mockMvc.perform(get("/produtos/categorias/nome/Lanche")
+		mockMvc.perform(get("/api/produtos/categorias/nome/Lanche")
 			      .contentType(MediaType.APPLICATION_JSON))
 			      .andExpect(status().isOk());
 		
@@ -198,7 +198,7 @@ public class ProdutoRestControllerTest {
     	
     	when(controller.listarPorCategoria(1L)).thenReturn(models);
     	
-		mockMvc.perform(get("/produtos/categorias/codigo/1")
+		mockMvc.perform(get("/api/produtos/categorias/codigo/1")
 			      .contentType(MediaType.APPLICATION_JSON))
 			      .andExpect(status().isOk());
 		
@@ -217,7 +217,7 @@ public class ProdutoRestControllerTest {
 		String content = ResourceUtil.getContentFromResource(
 				"/json/correto/produto-input.json");
 		
-		mockMvc.perform(post("/produtos").contentType(MediaType.APPLICATION_JSON).content(content))
+		mockMvc.perform(post("/api/produtos").contentType(MediaType.APPLICATION_JSON).content(content))
 			.andExpect(status().isCreated());
 
 		verify(controller, times(1)).adicionar(any(ProdutoInput.class));
@@ -231,7 +231,7 @@ public class ProdutoRestControllerTest {
 		String content = ResourceUtil.getContentFromResource(
 				"/json/correto/item-pedido-exclusao-input.json");
 		
-		mockMvc.perform(delete("/produtos/1")
+		mockMvc.perform(delete("/api/produtos/1")
 			      .contentType(MediaType.APPLICATION_JSON).content(content))
 			      .andExpect(status().isNoContent());
 		
@@ -249,7 +249,7 @@ public class ProdutoRestControllerTest {
 		String content = ResourceUtil.getContentFromResource(
 				"/json/correto/produto-atualizacao-input.json");
 		
-		mockMvc.perform(put("/produtos/1")
+		mockMvc.perform(put("/api/produtos/1")
 			      .contentType(MediaType.APPLICATION_JSON).content(content))
 			      .andExpect(status().isNoContent());
 		
@@ -264,7 +264,7 @@ public class ProdutoRestControllerTest {
 		String content = ResourceUtil.getContentFromResource(
 				"/json/correto/item-pedido-exclusao-input.json");
 		
-		mockMvc.perform(delete("/produtos/1")
+		mockMvc.perform(delete("/api/produtos/1")
 			      .contentType(MediaType.APPLICATION_JSON).content(content))
 			      .andExpect(status().is4xxClientError());
 	}
@@ -277,7 +277,7 @@ public class ProdutoRestControllerTest {
 		String content = ResourceUtil.getContentFromResource(
 				"/json/correto/item-pedido-exclusao-input.json");
 		
-		mockMvc.perform(delete("/produtos/1")
+		mockMvc.perform(delete("/api/produtos/1")
 			      .contentType(MediaType.APPLICATION_JSON).content(content))
 			      .andExpect(status().is4xxClientError());
 	}

@@ -15,7 +15,7 @@ import io.swagger.annotations.Api;
 
 @Api(tags = "Categorias")
 @RestController
-@RequestMapping(value = "/categorias", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/categorias", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CategoriaRestController {
 
     @Autowired
