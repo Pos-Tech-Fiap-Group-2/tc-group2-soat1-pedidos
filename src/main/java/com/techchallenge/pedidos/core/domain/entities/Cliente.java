@@ -7,7 +7,10 @@ public class Cliente {
 	private Long id;
     private String nome;
     private String email;
+	private Long telefone;
+	private Endereco endereco;
     private Long cpf;
+	private Boolean ativo = Boolean.TRUE;
 
     public String getNome() {
         return nome;
@@ -25,7 +28,21 @@ public class Cliente {
         this.email = email;
     }
 
-    public Long getCpf() {
+	public Long getTelefone() {
+		return telefone;
+	}
+
+	public void setTelefone(Long telefone) {this.telefone = telefone;}
+
+	public Endereco getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(Endereco endereco) {
+		this.endereco = endereco;
+	}
+
+	public Long getCpf() {
         return cpf;
     }
 
@@ -41,21 +58,24 @@ public class Cliente {
 		this.id = id;
 	}
 
+	public Boolean getAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(cpf, email, id, nome);
+		return Objects.hash(cpf, email, id, nome, telefone, endereco, ativo);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Cliente other = (Cliente) obj;
-		return Objects.equals(cpf, other.cpf) && Objects.equals(email, other.email) && Objects.equals(id, other.id)
-				&& Objects.equals(nome, other.nome);
+		if (this == obj) return true;
+		if (obj == null || getClass() != obj.getClass()) return false;
+		Cliente cliente = (Cliente) obj;
+		return Objects.equals(id, cliente.id) && Objects.equals(nome, cliente.nome) && Objects.equals(email, cliente.email) && Objects.equals(telefone, cliente.telefone) && Objects.equals(endereco, cliente.endereco) && Objects.equals(cpf, cliente.cpf) && Objects.equals(ativo, cliente.ativo);
 	}
 }
