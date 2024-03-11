@@ -15,8 +15,9 @@ public interface ClienteRepository extends JpaRepository<ClienteEntity, Long> {
     @SuppressWarnings("unchecked")
 	ClienteEntity save(ClienteEntity cliente);
 
+    @Query("select c from Cliente c where c.ativo = true")
     List<ClienteEntity> findByCpfIs(Long cpf);
     
-    @Query("select c from Cliente c where c.cpf = :cpf or c.email = :email")
+    @Query("select c from Cliente c where c.cpf = :cpf or c.email = :email and c.ativo = true")
     List<ClienteEntity> findByCpfOrEmail(Long cpf, String email);
 }

@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.techchallenge.pedidos.core.domain.entities.Endereco;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -33,31 +34,37 @@ public class ClienteBusinessMapperTest {
     	MockitoAnnotations.initMocks(this);
     }
     
-	private Cliente createCliente(Long id, Long cpf, String email, String nome) {
+	private Cliente createCliente(Long id, Long cpf, String email, String nome, Long telefone, Boolean ativo, Endereco endereco) {
 		Cliente cliente = new Cliente();
 		
-		cliente.setCpf(cpf);
-		cliente.setEmail(email);
 		cliente.setId(id);
+		cliente.setCpf(cpf);
 		cliente.setNome(nome);
-		
+		cliente.setTelefone(telefone);
+		cliente.setEmail(email);
+		cliente.setEndereco(endereco);
+		cliente.setAtivo(ativo);
+
 		return cliente;
 	}
 	
 	private ClienteEntity createClienteEntity(Cliente cliente) {
 		ClienteEntity entity = new ClienteEntity();
 		
-		entity.setCpf(cliente.getCpf());
-		entity.setEmail(cliente.getEmail());
 		entity.setId(cliente.getId());
+		entity.setCpf(cliente.getCpf());
 		entity.setNome(cliente.getNome());
-		
+		entity.setTelefone(cliente.getTelefone());
+		entity.setEmail(cliente.getEmail());
+		entity.setEndereco(cliente.getEndereco());
+		entity.setAtivo(cliente.getAtivo());
+
 		return entity;
 	}
 	
 	@Test
 	public void toModel() {
-		Cliente cliente = createCliente(1L, 12345678901L, "cliente.teste@teste.com.br", "Cliente Teste");
+		Cliente cliente = createCliente(1L, 12345678901L, "cliente.teste@teste.com.br", "Cliente Teste", 11965348752L, true, new Endereco());
 		ClienteEntity entity = createClienteEntity(cliente);
 		
 		when(mapper.map(entity, Cliente.class)).thenReturn(cliente);
@@ -67,7 +74,7 @@ public class ClienteBusinessMapperTest {
 	@Test
 	public void toCollectionModel() {
 		List<ClienteEntity> entities = new ArrayList<>();
-		Cliente cliente = createCliente(1L, 12345678901L, "cliente.teste@teste.com.br", "Cliente Teste");
+		Cliente cliente = createCliente(1L, 12345678901L, "cliente.teste@teste.com.br", "Cliente Teste", 11965348752L, true, new Endereco());
 		ClienteEntity entity = createClienteEntity(cliente);
 		
 		entities.add(entity);

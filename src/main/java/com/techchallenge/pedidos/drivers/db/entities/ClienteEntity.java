@@ -1,12 +1,11 @@
 package com.techchallenge.pedidos.drivers.db.entities;
 
+
+import com.techchallenge.pedidos.core.domain.entities.Endereco;
+
 import java.util.Objects;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity(name = "Cliente")
 public class ClienteEntity {
@@ -21,8 +20,17 @@ public class ClienteEntity {
     @Column(nullable = false, unique = true)
     private String email;
 
+    @Column()
+    private Long telefone;
+
+    @Column()
+    private Boolean ativo;
+
     @Column(nullable = false, unique = true)
     private Long cpf;
+
+    @Embedded
+    private Endereco endereco;
 
     public String getNome() {
         return nome;
@@ -56,7 +64,31 @@ public class ClienteEntity {
     	this.id = id;
     }
 
-	@Override
+    public Long getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(Long telefone) {
+        this.telefone = telefone;
+    }
+
+    public Boolean getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(Boolean ativo) {
+        this.ativo = ativo;
+    }
+
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
+    }
+
+    @Override
 	public int hashCode() {
 		return Objects.hash(id);
 	}

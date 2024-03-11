@@ -4,6 +4,7 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import com.techchallenge.pedidos.core.domain.entities.Endereco;
 import io.swagger.annotations.ApiModelProperty;
 
 public class ClienteInput {
@@ -21,6 +22,12 @@ public class ClienteInput {
 	@JsonProperty(required = true)
 	@NotNull
 	private Long cpf;
+
+	@ApiModelProperty(example = "964527898")
+	private Long telefone;
+
+	@ApiModelProperty(example = "Rua das Flores, 2345, Centro. CEP: 12345-678, São Paulo - SP")
+	private Endereco endereco;
 
 	public String getNome() {
 		return nome;
@@ -44,5 +51,21 @@ public class ClienteInput {
 
 	public void setCpf(Long cpf) {
 		this.cpf = cpf;
+	}
+
+	public Long getTelefone() {
+		return telefone;
+	}
+
+	public void setTelefone(Long telefone) {
+		this.telefone = telefone;
+	}
+
+	public Endereco getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(Endereco endereco) {
+		this.endereco = endereco;
 	}
 }

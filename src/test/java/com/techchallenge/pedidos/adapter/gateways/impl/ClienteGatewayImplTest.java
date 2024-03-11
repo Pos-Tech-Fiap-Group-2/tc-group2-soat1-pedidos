@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.techchallenge.pedidos.core.domain.entities.Endereco;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -49,21 +50,24 @@ public class ClienteGatewayImplTest {
     	MockitoAnnotations.initMocks(this);
     }
     
-	private ClienteEntity createClienteEntity(Long id, Long cpf, String email, String nome) {
+	private ClienteEntity createClienteEntity(Long id, Long cpf, String email, String nome, Long telefone, Boolean ativo, Endereco endereco) {
 		ClienteEntity cliente = new ClienteEntity();
 		
-		cliente.setCpf(cpf);
-		cliente.setEmail(email);
 		cliente.setId(id);
+		cliente.setCpf(cpf);
 		cliente.setNome(nome);
-		
+		cliente.setTelefone(telefone);
+		cliente.setEmail(email);
+		cliente.setEndereco(endereco);
+		cliente.setAtivo(ativo);
+
 		return cliente;
 	}
 	
 	@SuppressWarnings("serial")
 	private List<ClienteEntity> createClienteEntities() {
 		return new ArrayList<ClienteEntity>() {{
-			this.add(createClienteEntity(1L, 12345678901L, "cliente.teste@teste.com.br", "Cliente Teste"));
+			this.add(createClienteEntity(1L, 12345678901L, "cliente.teste@teste.com.br", "Cliente Teste", 11965348752L, true, new Endereco()));
 		}};
 	}
     
@@ -87,8 +91,8 @@ public class ClienteGatewayImplTest {
     	Long cpf = 12345678901L;
     	String email = "cliente.teste@teste.com.br";
     	
-    	ClienteEntity clienteEntity = createClienteEntity(1L, cpf, email, "Cliente Teste");
-    	ClienteEntity expectedEntity = createClienteEntity(1L, cpf, email, "Cliente Teste");
+    	ClienteEntity clienteEntity = createClienteEntity(1L, cpf, email, "Cliente Teste", 11965348752L, true, new Endereco());
+    	ClienteEntity expectedEntity = createClienteEntity(1L, cpf, email, "Cliente Teste", 11965348752L, true, new Endereco());
     	Cliente cliente = createCliente(expectedEntity);
     	Cliente expected = createCliente(expectedEntity);
     	
@@ -106,7 +110,7 @@ public class ClienteGatewayImplTest {
     	Long cpf = 12345678901L;
     	String email = "cliente.teste@teste.com.br";
     	
-    	Optional<ClienteEntity> expectedEntity = Optional.of(createClienteEntity(1L, cpf, email, "Cliente Teste"));
+    	Optional<ClienteEntity> expectedEntity = Optional.of(createClienteEntity(1L, cpf, email, "Cliente Teste", 11965348752L, true, new Endereco()));
     	Cliente expected = createCliente(expectedEntity.get());
     	
     	when(repository.findById(expectedEntity.get().getId())).thenReturn(expectedEntity);
@@ -123,7 +127,7 @@ public class ClienteGatewayImplTest {
     	List<ClienteEntity> expectedEntities = createClienteEntities();
     	List<Cliente> expected = createClientes(expectedEntities);
     	
-    	Optional<ClienteEntity> expectedEntity = Optional.of(createClienteEntity(1L, cpf, email, "Cliente Teste"));
+    	Optional<ClienteEntity> expectedEntity = Optional.of(createClienteEntity(1L, cpf, email, "Cliente Teste", 11965348752L, true, new Endereco()));
     	
     	when(repository.findByCpfIs(expectedEntity.get().getCpf())).thenReturn(expectedEntities);
     	when(businessMapper.toCollectionModel(expectedEntities)).thenReturn(expected);
@@ -142,7 +146,7 @@ public class ClienteGatewayImplTest {
     	Long cpf = 12345678901L;
     	String email = "cliente.teste@teste.com.br";
     	
-    	Optional<ClienteEntity> expectedEntity = Optional.of(createClienteEntity(1L, cpf, email, "Cliente Teste"));
+    	Optional<ClienteEntity> expectedEntity = Optional.of(createClienteEntity(1L, cpf, email, "Cliente Teste", 11965348752L, true, new Endereco()));
     	Cliente expected = createCliente(expectedEntity.get());
     	
     	when(repository.findById(expectedEntity.get().getId())).thenReturn(expectedEntity);
@@ -154,7 +158,7 @@ public class ClienteGatewayImplTest {
     	Long cpf = 12345678901L;
     	String email = "cliente.teste@teste.com.br";
     	
-    	ClienteEntity expectedEntity = createClienteEntity(1L, cpf, email, "Cliente Teste");
+    	ClienteEntity expectedEntity = createClienteEntity(1L, cpf, email, "Cliente Teste", 11965348752L, true, new Endereco());
     	Cliente cliente = createCliente(expectedEntity);
     	
     	List<ClienteEntity> expectedEntities = createClienteEntities();
@@ -168,7 +172,7 @@ public class ClienteGatewayImplTest {
     	Long cpf = 12345678901L;
     	String email = "cliente.teste@teste.com.br";
     	
-    	ClienteEntity entity = createClienteEntity(1L, cpf, email, "Cliente Teste");
+    	ClienteEntity entity = createClienteEntity(1L, cpf, email, "Cliente Teste", 11965348752L, true, new Endereco());
     	Optional<ClienteEntity> expectedEntity = Optional.empty();
     	
     	when(repository.findById(entity.getId())).thenReturn(expectedEntity);
@@ -188,9 +192,12 @@ public class ClienteGatewayImplTest {
     public void atualizarDadosCliente_then_throws_EntidadeNaoEncontradaException() {
     	Long cpf = 12345678901L;
     	String email = "cliente.teste@teste.com.br";
+		Long telefone = 11965348752L;
+		Endereco endereco = new Endereco();
+		Boolean ativo = true;
     	
     	Optional<ClienteEntity> expectedEntity = Optional.empty();
-    	ClienteEntity entity = createClienteEntity(1L, cpf, email, "Cliente Teste");
+    	ClienteEntity entity = createClienteEntity(1L, cpf, email, "Cliente Teste", telefone, ativo, endereco);
     	Cliente expected = createCliente(entity);
     	
     	when(repository.findById(entity.getId())).thenReturn(expectedEntity);

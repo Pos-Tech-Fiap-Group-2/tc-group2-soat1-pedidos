@@ -11,6 +11,7 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.techchallenge.pedidos.core.domain.entities.Endereco;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -26,101 +27,116 @@ import com.techchallenge.pedidos.core.domain.exception.NegocioException;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class ClienteUseCaseTest {
 
-	@InjectMocks
-	private ClienteUseCase useCase;
-	
-	@Mock
+    @InjectMocks
+    private ClienteUseCase useCase;
+
+    @Mock
     private ClienteGateway gateway;
-	
+
     @BeforeEach
     private void setup() {
-    	MockitoAnnotations.initMocks(this);
-    }
-	
-	private Cliente createCliente(Long id, Long cpf, String email, String nome) {
-		Cliente cliente = new Cliente();
-		
-		cliente.setCpf(cpf);
-		cliente.setEmail(email);
-		cliente.setId(id);
-		cliente.setNome(nome);
-		
-		return cliente;
-	}
-	
-	@SuppressWarnings("serial")
-	private List<Cliente> createClientes() {
-		return new ArrayList<Cliente>() {{
-			this.add(createCliente(1L, 12345678901L, "cliente.teste@teste.com.br", "Cliente Teste"));
-		}};
-	}
-	
-	@Test
-    public void salvar() {
-		Cliente entity = createCliente(1L, 12345678901L, "cliente.teste@teste.com.br", "Cliente Teste");
-		Cliente expected = createCliente(1L, 12345678901L, "cliente.teste@teste.com.br", "Cliente Teste");
-		
-    	when(gateway.salvar(entity)).thenReturn(expected);
-    	assertEquals(useCase.salvar(entity), expected);
-    }
-    
-	@Test
-    public void buscarPorId() {
-		Long id = 1L;
-		Cliente expected = createCliente(id, 12345678901L, "cliente.teste@teste.com.br", "Cliente Teste");
-		
-    	when(gateway.buscarPorId(id)).thenReturn(expected);
-    	assertEquals(useCase.buscarPorId(id), expected);
+        MockitoAnnotations.initMocks(this);
     }
 
-	@Test
+    private Cliente createCliente(Long id, Long cpf, String email, String nome, Long telefone, Boolean ativo, Endereco endereco) {
+        Cliente cliente = new Cliente();
+
+        cliente.setId(id);
+        cliente.setCpf(cpf);
+        cliente.setNome(nome);
+        cliente.setEmail(email);
+        cliente.setTelefone(telefone);
+        cliente.setAtivo(ativo);
+        cliente.setEndereco(endereco);
+
+        return cliente;
+    }
+
+    @SuppressWarnings("serial")
+    private List<Cliente> createClientes() {
+        return new ArrayList<Cliente>() {{
+            this.add(createCliente(1L, 12345678901L, "cliente.teste@teste.com.br", "Cliente Teste", 12345678901L, true, new Endereco() {{
+                setCep("12345-678");
+                setCidade("São Paulo");
+                setLogradouro("Rua das Flores");
+                setNumero(2345L);
+                setComplemento("Centro");
+            }}));
+        }};
+    }
+
+    @Test
+    public void salvar() {
+        Cliente entity = createCliente(1L, 12345678901L, "cliente.teste@teste.com.br", "Cliente Teste", 12345678901L, true, new Endereco() {{
+            setCep("12345-678");
+            setCidade("São Paulo");
+            setLogradouro("Rua das Flores");
+            setNumero(2345L);
+            setComplemento("Centro");
+        }});
+        Cliente expected = createCliente(1L, 12345678901L, "cliente.teste@teste.com.br", "Cliente Teste", 12345678901L, true, new Endereco());
+
+        when(gateway.salvar(entity)).thenReturn(expected);
+        assertEquals(useCase.salvar(entity), expected);
+    }
+
+    @Test
+    public void buscarPorId() {
+        Long id = 1L;
+        Cliente expected = createCliente(id, 12345678901L, "cliente.teste@teste.com.br", "Cliente Teste", 12345678901L, true, new Endereco());
+
+        when(gateway.buscarPorId(id)).thenReturn(expected);
+        assertEquals(useCase.buscarPorId(id), expected);
+    }
+
+    @Test
     public void buscarPorCpf() {
-		Long cpf = 12345678901L;
-		List<Cliente> expected = createClientes();
-		
+        Long cpf = 12345678901L;
+        List<Cliente> expected = createClientes();
+
         when(gateway.buscarPorCpf(cpf)).thenReturn(expected);
         assertTrue(useCase.buscarPorCpf(cpf).size() == 1);
     }
-    
-	@Test
+
+    @Test
     public void excluir() {
-		Long id = 1L;
-		
-    	doNothing().when(gateway).excluir(id);
-    	assertDoesNotThrow(() -> useCase.excluir(id));
+        Long id = 1L;
+
+        doNothing().when(gateway).excluir(id);
+        assertDoesNotThrow(() -> useCase.excluir(id));
     }
-    
-	@Test
+
+    @Test
     public void atualizarDadosCliente() {
-		Long id = 1L;
-		Cliente expected = createCliente(id, 12345678902L, "cliente_novo.teste@teste.com.br", "Cliente Novo Teste");
-		
-    	doNothing().when(this.gateway).atualizarDadosCliente(id, expected);
-    	assertDoesNotThrow(() -> useCase.atualizarDadosCliente(id, expected));
+        Long id = 1L;
+        Cliente expected = createCliente(id, 12345678902L, "cliente_novo.teste@teste.com.br", "Cliente Novo Teste", 12345678902L, true, new Endereco());
+
+        doNothing().when(this.gateway).atualizarDadosCliente(id, expected);
+        assertDoesNotThrow(() -> useCase.atualizarDadosCliente(id, expected));
     }
-	
-	@Test
+
+    @Test
     public void salvar_then_throws_NegocioException() {
-		Cliente entity = createCliente(1L, 12345678901L, "cliente.teste@teste.com.br", "Cliente Teste");
-		
-    	when(gateway.salvar(entity)).thenThrow(NegocioException.class);
-    	assertThrows(NegocioException.class, () -> useCase.salvar(entity));
+        Cliente entity = createCliente(1L, 12345678901L, "cliente.teste@teste.com.br", "Cliente Teste", 12345678901L, true, new Endereco());
+
+        when(gateway.salvar(entity)).thenThrow(NegocioException.class);
+        assertThrows(NegocioException.class, () -> useCase.salvar(entity));
     }
-	
-	@Test
+
+    @Test
     public void excluir_then_throws_NegocioException() {
-		Long id = 1L;
-		
-		doThrow(NegocioException.class).when(gateway).excluir(id);
-		assertThrows(NegocioException.class, () -> useCase.excluir(id));
+        Long id = 1L;
+
+        doThrow(NegocioException.class).when(gateway).excluir(id);
+        assertThrows(NegocioException.class, () -> useCase.excluir(id));
     }
-	
-	@Test
+
+    @Test
     public void atualizarDadosCliente_then_throws_NegocioException() {
-		Long id = 1L;
-		Cliente expected = createCliente(id, 12345678902L, "cliente_novo.teste@teste.com.br", "Cliente Novo Teste");
-		
-		doThrow(NegocioException.class).when(gateway).atualizarDadosCliente(id, expected);
-		assertThrows(NegocioException.class, () -> useCase.atualizarDadosCliente(id, expected));
+        Long id = 1L;
+        Cliente expected = createCliente(id, 12345678902L, "cliente_novo.teste@teste.com.br", "Cliente Novo Teste", 12345678902L, true, new Endereco());
+
+        doThrow(NegocioException.class).when(gateway).atualizarDadosCliente(id, expected);
+        assertThrows(NegocioException.class, () -> useCase.atualizarDadosCliente(id, expected));
     }
 }

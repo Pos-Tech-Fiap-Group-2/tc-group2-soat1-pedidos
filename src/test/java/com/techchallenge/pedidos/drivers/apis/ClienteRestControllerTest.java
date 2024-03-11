@@ -15,6 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.lang.reflect.Field;
 import java.util.Locale;
 
+import com.techchallenge.pedidos.core.domain.entities.Endereco;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -50,14 +51,17 @@ public class ClienteRestControllerTest {
 	@Mock
 	private ClienteController controller;
 	
-	private Cliente createCliente(Long id, Long cpf, String email, String nome) {
+	private Cliente createCliente(Long id, Long cpf, String email, String nome, Long telefone, Boolean ativo, Endereco endereco) {
 		Cliente cliente = new Cliente();
 		
-		cliente.setCpf(cpf);
-		cliente.setEmail(email);
 		cliente.setId(id);
+		cliente.setCpf(cpf);
 		cliente.setNome(nome);
-		
+		cliente.setTelefone(telefone);
+		cliente.setEmail(email);
+		cliente.setAtivo(ativo);
+		cliente.setEndereco(endereco);
+
 		return cliente;
 	}
 	
@@ -65,9 +69,11 @@ public class ClienteRestControllerTest {
 		ClienteInput input = new ClienteInput();
 		
 		input.setCpf(cliente.getCpf());
-		input.setEmail(cliente.getEmail());
 		input.setNome(cliente.getNome());
-		
+		input.setTelefone(cliente.getTelefone());
+		input.setEmail(cliente.getEmail());
+		input.setEndereco(cliente.getEndereco());
+
 		return input;
 	}
 	
@@ -76,6 +82,9 @@ public class ClienteRestControllerTest {
 		
 		input.setEmail(cliente.getEmail());
 		input.setNome(cliente.getNome());
+		input.setTelefone(cliente.getTelefone());
+		input.setAtivo(cliente.getAtivo());
+		input.setEndereco(cliente.getEndereco());
 		
 		return input;
 	}
@@ -87,6 +96,9 @@ public class ClienteRestControllerTest {
 		model.setEmail(cliente.getEmail());
 		model.setId(cliente.getId());
 		model.setNome(cliente.getNome());
+		model.setTelefone(cliente.getTelefone());
+		model.setAtivo(cliente.getAtivo());
+		model.setEndereco(cliente.getEndereco());
 		
 		return model;
 	}
@@ -140,7 +152,7 @@ public class ClienteRestControllerTest {
 	
 	@Test
 	public void adicionar() throws Exception {
-    	Cliente cliente = createCliente(1L, 12345678901L, "cliente.teste@teste.com.br", "Cliente Teste");
+    	Cliente cliente = createCliente(1L, 12345678901L, "cliente.teste@teste.com.br", "Cliente Teste", 964527898L, Boolean.TRUE, new Endereco());
     	ClienteInput input = createClienteInput(cliente);
     	ClienteModel model = createClienteModel(cliente);
     	
@@ -157,7 +169,7 @@ public class ClienteRestControllerTest {
 	
 	@Test
 	public void buscarPorCpf() throws Exception {
-    	Cliente cliente = createCliente(1L, 12345678901L, "cliente.teste@teste.com.br", "Cliente Teste");
+    	Cliente cliente = createCliente(1L, 12345678901L, "cliente.teste@teste.com.br", "Cliente Teste", 964527898L, Boolean.TRUE, new Endereco());
     	ClienteModel model = createClienteModel(cliente);
     	
 		when(controller.buscarPorCpf(12345678901L)).thenReturn(model);
@@ -188,7 +200,7 @@ public class ClienteRestControllerTest {
 	@Test
     public void atualizarDadosCliente() throws Exception {
 		
-		Cliente cliente = createCliente(1L, 12345678901L, "cliente.teste@teste.com.br", "Cliente Teste");
+		Cliente cliente = createCliente(1L, 12345678901L, "cliente.teste@teste.com.br", "Cliente Teste", 964527898L, Boolean.TRUE, new Endereco());
 		ClienteAtualizacaoInput input = createClienteAtualizacaoInput(cliente);
 		
 		doNothing().when(controller).atualizarDadosCliente(cliente.getId(), input);

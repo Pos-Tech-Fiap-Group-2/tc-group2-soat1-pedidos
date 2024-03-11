@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import com.techchallenge.pedidos.core.domain.entities.Endereco;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
@@ -37,12 +38,14 @@ public class ClienteBDDPassos {
 		}
 	}
 	
-	private ClienteInput createClienteInput(Long cpf, String email, String nome) {
+	private ClienteInput createClienteInput(Long cpf, String email, String nome, Long telefone, Endereco endereco) {
 		ClienteInput input = new ClienteInput();
 		
 		input.setCpf(cpf);
 		input.setEmail(email);
 		input.setNome(nome);
+		input.setTelefone(telefone);
+		input.setEndereco(endereco);
 		
 		return input;
 	}
@@ -71,7 +74,7 @@ public class ClienteBDDPassos {
 	
 	@Quando("Solicitar a gravação dos dados do cliente")
 	public void gravarCliente() {
-		ClienteInput input = createClienteInput(12345678901L, "cliente.teste@teste.com.br", "Cliente Teste");
+		ClienteInput input = createClienteInput(12345678901L, "cliente.teste@teste.com.br", "Cliente Teste", 11965348752L, new Endereco());
 		response = adicionarCliente(input);
 	}
 
@@ -87,7 +90,7 @@ public class ClienteBDDPassos {
 
 	@Dado("que um cliente já existente na plataforma")
 	public void consultarClienteNaPlataforma() {
-		ClienteInput input = createClienteInput(12345678901L, "cliente.teste@teste.com.br", "Cliente Teste");
+		ClienteInput input = createClienteInput(12345678901L, "cliente.teste@teste.com.br", "Cliente Teste", 11965348752L, new Endereco());
 		response = adicionarCliente(input);
 		
 		response = consultarCliente(12345678901L);
@@ -99,7 +102,7 @@ public class ClienteBDDPassos {
 
 	@Quando("requisitar atualização dos dados do cliente")
 	public void atualizarDadosDoCliente() {
-		ClienteInput input = createClienteInput(12345678901L, "cliente-alterado.teste@teste.com.br", "Cliente Teste Alterado");
+		ClienteInput input = createClienteInput(12345678901L, "cliente-alterado.teste@teste.com.br", "Cliente Teste Alterado", 11965348756L, new Endereco());
 		
 		response = given()
 				.contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -118,7 +121,7 @@ public class ClienteBDDPassos {
 	
 	@Quando("solicitar os dados de um cliente")
 	public void solicitarDadosDoCliente() {
-		ClienteInput input = createClienteInput(12345678901L, "cliente.teste@teste.com.br", "Cliente Teste");
+		ClienteInput input = createClienteInput(12345678901L, "cliente.teste@teste.com.br", "Cliente Teste", 11965348752L, new Endereco());
 		response = adicionarCliente(input);
 		
 		response = consultarCliente(12345678901L);
@@ -136,7 +139,7 @@ public class ClienteBDDPassos {
 	
 	@Dado("que um cliente esteja cadastrado na plataforma")
 	public void consultarCliente() {
-		ClienteInput input = createClienteInput(21345678901L, "cliente-exclusao.teste@teste.com.br", "Cliente Teste Exclusao");
+		ClienteInput input = createClienteInput(21345678901L, "cliente-exclusao.teste@teste.com.br", "Cliente Teste Exclusao", 11965348752L, new Endereco());
 		response = adicionarCliente(input);
 		
 		String idValue = response.getBody().jsonPath().getJsonObject("id").toString();
