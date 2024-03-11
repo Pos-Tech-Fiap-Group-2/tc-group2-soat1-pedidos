@@ -29,7 +29,7 @@ import io.swagger.annotations.ApiResponses;
 
 @Api(tags = "Clientes")
 @RestController
-@RequestMapping(value = "/clientes", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/clientes", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 public class ClienteRestController {
 	
 	@Autowired

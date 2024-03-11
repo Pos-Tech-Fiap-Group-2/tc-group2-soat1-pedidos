@@ -110,7 +110,7 @@ public class CategoriaRestControllerTest {
 
 		when(controller.listar()).thenReturn(createCategoriaModels());
 		
-		mockMvc.perform(get("/categorias").contentType(MediaType.APPLICATION_JSON))
+		mockMvc.perform(get("/api/categorias").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
 	}
 }

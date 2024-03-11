@@ -161,7 +161,7 @@ public class ClienteRestControllerTest {
 		String content = ResourceUtil.getContentFromResource(
 				"/json/correto/cliente-input.json");
 		
-		mockMvc.perform(post("/clientes").contentType(MediaType.APPLICATION_JSON).content(content))
+		mockMvc.perform(post("/api/clientes").contentType(MediaType.APPLICATION_JSON).content(content))
 			.andExpect(status().isCreated());
 		
 		verify(controller, times(1)).adicionar(any(ClienteInput.class));
@@ -174,7 +174,7 @@ public class ClienteRestControllerTest {
     	
 		when(controller.buscarPorCpf(12345678901L)).thenReturn(model);
 		
-		mockMvc.perform(get("/clientes/12345678901")
+		mockMvc.perform(get("/api/clientes/12345678901")
 			      .contentType(MediaType.APPLICATION_JSON))
 			      .andExpect(status().isOk())
 			      .andExpect(jsonPath("$.cpf").value(model.getCpf()))
@@ -190,7 +190,7 @@ public class ClienteRestControllerTest {
 		
 		doNothing().when(controller).remover(12345678901L);
 		
-		mockMvc.perform(delete("/clientes/12345678901")
+		mockMvc.perform(delete("/api/clientes/12345678901")
 			      .contentType(MediaType.APPLICATION_JSON))
 			      .andExpect(status().isNoContent());
 		
@@ -208,7 +208,7 @@ public class ClienteRestControllerTest {
 		String content = ResourceUtil.getContentFromResource(
 				"/json/correto/cliente-atualizacao-input.json");
 		
-		mockMvc.perform(patch("/clientes/1")
+		mockMvc.perform(patch("/api/clientes/1")
 			      .contentType(MediaType.APPLICATION_JSON).content(content))
 			      .andExpect(status().isNoContent());
 		
@@ -221,7 +221,7 @@ public class ClienteRestControllerTest {
 		String content = ResourceUtil.getContentFromResource(
 				"/json/incorreto/cliente-input-sem-nome.json");
 
-		mockMvc.perform(post("/clientes").contentType(MediaType.APPLICATION_JSON).content(content))
+		mockMvc.perform(post("/api/clientes").contentType(MediaType.APPLICATION_JSON).content(content))
 				.andExpect(status().is4xxClientError());
 	}
 	
@@ -231,21 +231,21 @@ public class ClienteRestControllerTest {
 		String content = ResourceUtil.getContentFromResource(
 				"/json/incorreto/cliente-input-cpf-conteudo-invalido");
 
-		mockMvc.perform(post("/clientes").contentType(MediaType.APPLICATION_JSON).content(content))
+		mockMvc.perform(post("/api/clientes").contentType(MediaType.APPLICATION_JSON).content(content))
 				.andExpect(status().is4xxClientError());
 	}
 	
 	@Test
 	public void dadoInclusaoCliente_quandoEstiverComMediaTypeIncorreto_entaoStatus400() throws Exception {
 		
-		mockMvc.perform(post("/clientes").contentType(MediaType.APPLICATION_XML).content(""))
+		mockMvc.perform(post("/api/clientes").contentType(MediaType.APPLICATION_XML).content(""))
 				.andExpect(status().is4xxClientError());
 	}
 	
 	@Test
 	public void dadoInclusaoCliente_quandoEstiverConteudoInvalido_entaoStatus400() throws Exception {
 		
-		mockMvc.perform(post("/clientes").contentType(MediaType.APPLICATION_JSON).content("<xml><teste>1</teste></xml>"))
+		mockMvc.perform(post("/api/clientes").contentType(MediaType.APPLICATION_JSON).content("<xml><teste>1</teste></xml>"))
 				.andExpect(status().is4xxClientError());
 	}
 	
@@ -258,7 +258,7 @@ public class ClienteRestControllerTest {
 		when(controller.adicionar(any(ClienteInput.class)))
 			.thenThrow(new RuntimeException("Erro inesperado"));
 	
-		mockMvc.perform(post("/clientes")
+		mockMvc.perform(post("/api/clientes")
 	      .contentType(MediaType.APPLICATION_JSON).content(content))
 	      .andExpect(status().is5xxServerError());
 	}
@@ -271,7 +271,7 @@ public class ClienteRestControllerTest {
 		
 		when(controller.adicionar(any(ClienteInput.class))).thenThrow(new ValidacaoException(new BindException(controller, "Test")));
 	
-		mockMvc.perform(post("/clientes")
+		mockMvc.perform(post("/api/clientes")
 	      .contentType(MediaType.APPLICATION_JSON).content(content))
 	      .andExpect(status().is4xxClientError());
 	}
