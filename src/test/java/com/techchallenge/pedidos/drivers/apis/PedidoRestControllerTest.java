@@ -42,6 +42,7 @@ import com.techchallenge.pedidos.adapter.driver.model.ItemPedidoModel;
 import com.techchallenge.pedidos.adapter.driver.model.PedidoModel;
 import com.techchallenge.pedidos.adapter.driver.model.ProdutoModel;
 import com.techchallenge.pedidos.adapter.driver.model.input.ItemPedidoInput;
+import com.techchallenge.pedidos.adapter.driver.model.input.StatusPedidoInput;
 import com.techchallenge.pedidos.core.domain.entities.Categoria;
 import com.techchallenge.pedidos.core.domain.entities.Cliente;
 import com.techchallenge.pedidos.core.domain.entities.ItemPedido;
@@ -320,13 +321,15 @@ public class PedidoRestControllerTest {
 		String content = ResourceUtil.getContentFromResource(
 				"/json/correto/pedido-status-input.json");
 		
-		doNothing().when(controller).atualizarStatusDoPedido(1L, StatusPedido.PRONTO.name());
+		StatusPedidoInput input = new StatusPedidoInput();
+		input.setStatus(StatusPedido.PRONTO);
+		doNothing().when(controller).atualizarStatusDoPedido(1L, input);
 		
 		mockMvc.perform(patch("/api/pedidos/1/status")
 			      .contentType(MediaType.APPLICATION_JSON).content(content))
 			      .andExpect(status().isNoContent());
 		
-		verify(controller, times(1)).atualizarStatusDoPedido(any(Long.class), any(String.class));
+		verify(controller, times(1)).atualizarStatusDoPedido(any(Long.class), any(StatusPedidoInput.class));
     }
 
     @Test

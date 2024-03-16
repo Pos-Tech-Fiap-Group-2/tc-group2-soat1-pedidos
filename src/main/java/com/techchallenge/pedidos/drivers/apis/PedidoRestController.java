@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -24,6 +23,7 @@ import com.techchallenge.pedidos.adapter.driver.exceptionhandler.Problem;
 import com.techchallenge.pedidos.adapter.driver.model.ItemPedidoModel;
 import com.techchallenge.pedidos.adapter.driver.model.PedidoModel;
 import com.techchallenge.pedidos.adapter.driver.model.input.ItemPedidoInput;
+import com.techchallenge.pedidos.adapter.driver.model.input.StatusPedidoInput;
 import com.techchallenge.pedidos.core.domain.entities.StatusPedido;
 
 import io.swagger.annotations.Api;
@@ -72,8 +72,8 @@ public class PedidoRestController {
             @ApiResponse(code = 404, message = "Pedido não encontrado com o ID informado", response = Problem.class)
     })
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PatchMapping(value = "/{id}/status")
-    public void atualizarStatusDoPedido(@ApiParam(value = "ID do pedido", example = "12345678") @PathVariable Long id, @RequestBody String novoStatus) {
+    @PutMapping(value = "/{id}/status")
+    public void atualizarStatusDoPedido(@ApiParam(value = "ID do pedido", example = "12345678") @PathVariable Long id, @RequestBody StatusPedidoInput novoStatus) {
     	controller.atualizarStatusDoPedido(id, novoStatus);
     }
     

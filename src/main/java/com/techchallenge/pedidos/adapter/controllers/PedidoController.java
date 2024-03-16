@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import com.techchallenge.pedidos.adapter.driver.model.ItemPedidoModel;
 import com.techchallenge.pedidos.adapter.driver.model.PedidoModel;
 import com.techchallenge.pedidos.adapter.driver.model.input.ItemPedidoInput;
+import com.techchallenge.pedidos.adapter.driver.model.input.StatusPedidoInput;
 import com.techchallenge.pedidos.adapter.mapper.api.ItemPedidoApiMapper;
 import com.techchallenge.pedidos.adapter.mapper.api.PedidoApiMapper;
 import com.techchallenge.pedidos.core.domain.entities.ItemPedido;
@@ -48,10 +49,9 @@ public class PedidoController {
     	return mapper.toCollectionModelOrderByStatus(pedidos);
     }
 
-    public void atualizarStatusDoPedido(Long id, String novoStatus) {
+    public void atualizarStatusDoPedido(Long id, StatusPedidoInput statusPedido) {
         Pedido pedido = useCase.buscarPedidoPorId(id);
-        StatusPedido statusPedido = StatusPedido.valueOf(novoStatus);
-        useCase.atualizarStatusDoPedido(pedido, statusPedido);
+        useCase.atualizarStatusDoPedido(pedido, statusPedido.getStatus());
     }
     
 	public ItemPedidoModel adicionarProduto(Long id, ItemPedidoInput input) {

@@ -27,6 +27,7 @@ import com.techchallenge.pedidos.adapter.driver.model.ItemPedidoModel;
 import com.techchallenge.pedidos.adapter.driver.model.PedidoModel;
 import com.techchallenge.pedidos.adapter.driver.model.ProdutoModel;
 import com.techchallenge.pedidos.adapter.driver.model.input.ItemPedidoInput;
+import com.techchallenge.pedidos.adapter.driver.model.input.StatusPedidoInput;
 import com.techchallenge.pedidos.adapter.mapper.api.ItemPedidoApiMapper;
 import com.techchallenge.pedidos.adapter.mapper.api.PedidoApiMapper;
 import com.techchallenge.pedidos.core.domain.entities.Categoria;
@@ -260,10 +261,13 @@ public class PedidoControllerTest {
 		Pedido pedido = createPedido(1L, cliente);
 		Pedido expectedPedido = createPedido(1L, cliente);
 		
+		StatusPedidoInput input = new StatusPedidoInput();
+		input.setStatus(StatusPedido.PREPARACAO);
+		
 		when(useCase.buscarPedidoPorId(pedido.getId())).thenReturn(expectedPedido);
 		doNothing().when(useCase).atualizarStatusDoPedido(pedido, StatusPedido.PREPARACAO);
 		
-		assertDoesNotThrow(() -> controller.atualizarStatusDoPedido(pedido.getId(), StatusPedido.PREPARACAO.name()));
+		assertDoesNotThrow(() -> controller.atualizarStatusDoPedido(pedido.getId(), input));
     }
     
     @Test
