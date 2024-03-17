@@ -1,13 +1,13 @@
 {
-  "taskDefinitionArn": "arn:aws:ecs:us-east-1:818048014896:task-definition/tech-challenge-task:1",
+  "taskDefinitionArn": "arn:aws:ecs:us-east-1:654654392738:task-definition/tech-challenge-pedidos-task:1",
   "containerDefinitions": [
     {
       "name": "tech-challenge-api-pedidos",
-      "image": "818048014896.dkr.ecr.us-east-1.amazonaws.com/tech-challenge-ecr:tc-api-pedidos",
+      "image": "654654392738.dkr.ecr.us-east-1.amazonaws.com/tech-challenge-ecr:tc-api-pedidos",
       "cpu": 0,
       "portMappings": [
         {
-          "name": "tc-producao",
+          "name": "8080",
           "containerPort": 8080,
           "hostPort": 8080,
           "protocol": "tcp",
@@ -17,8 +17,8 @@
       "essential": true,
       "environment": [
         {
-          "name":"DB_HOST",
-          "value":"tech-challenge-db.cluster-c1ssc6e4s6n7.us-east-1.rds.amazonaws.com"
+          "name": "DB_HOST",
+          "value": "tech-challenge-db-instance.c3uuskqmwd2w.us-east-1.rds.amazonaws.com"
         },
         {
           "name": "DB_USER",
@@ -26,7 +26,7 @@
         },
         {
           "name": "DB_PASSWORD",
-          "value":"roottech"
+          "value": "roottech"
         }
       ],
       "environmentFiles": [],
@@ -37,17 +37,18 @@
         "logDriver": "awslogs",
         "options": {
           "awslogs-create-group": "true",
-          "awslogs-group": "/ecs/tech-challenge-task",
+          "awslogs-group": "/ecs/tech-challenge-pagamentos-task",
           "awslogs-region": "us-east-1",
           "awslogs-stream-prefix": "ecs"
         },
         "secretOptions": []
-      }
+      },
+      "systemControls": []
     }
   ],
-  "family": "tech-challenge-task",
-  "taskRoleArn": "arn:aws:iam::818048014896:role/LabRole",
-  "executionRoleArn": "arn:aws:iam::818048014896:role/LabRole",
+  "family": "tech-challenge-pedidos-task",
+  "taskRoleArn": "arn:aws:iam::654654392738:role/LabRole",
+  "executionRoleArn": "arn:aws:iam::654654392738:role/LabRole",
   "networkMode": "awsvpc",
   "revision": 1,
   "volumes": [],
@@ -95,7 +96,12 @@
     "cpuArchitecture": "X86_64",
     "operatingSystemFamily": "LINUX"
   },
-  "registeredAt": "2024-01-27T05:21:49.301Z",
-  "registeredBy": "arn:aws:sts::818048014896:assumed-role/voclabs/user3013614=vinicius.furin@outlook.com",
-  "tags": []
+  "registeredAt": "2024-03-17T03:05:10.177Z",
+  "registeredBy": "arn:aws:sts::654654392738:assumed-role/voclabs/user3153990=marcel.cozono@gmail.com",
+  "tags": [
+    {
+      "key": "Name",
+      "value": "tech-challenge-pedidos-task"
+    }
+  ]
 }
