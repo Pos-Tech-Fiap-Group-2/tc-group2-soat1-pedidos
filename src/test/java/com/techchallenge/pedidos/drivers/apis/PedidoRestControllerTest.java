@@ -7,7 +7,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -325,7 +324,7 @@ public class PedidoRestControllerTest {
 		input.setStatus(StatusPedido.PRONTO);
 		doNothing().when(controller).atualizarStatusDoPedido(1L, input);
 		
-		mockMvc.perform(patch("/api/pedidos/1/status")
+		mockMvc.perform(put("/api/pedidos/1/status")
 			      .contentType(MediaType.APPLICATION_JSON).content(content))
 			      .andExpect(status().isNoContent());
 		
